@@ -14,7 +14,8 @@ const Toolbar=()=>{
     const colorMode=useContext(ColorModeContext)
 
 
-    return <Box display="flex" justifyContent="space-around" p={2}>
+    return <Box display="flex" justifyContent="space-around"
+     p={2} >
 
         <Box display="flex" backgroundColor={colors.primary[400]} borderRadius="3px">
             
