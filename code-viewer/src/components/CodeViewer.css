@@ -1,0 +1,74 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.codeViewer{
+    background-color: grey;
+    margin: auto;
+    margin-top: 6rem;
+    width: 80vw;
+    overflow: hidden;    
+    border-radius: 0.5rem;
+}
+
+.codeViewer header{
+    display: flex;
+    flex-direction: row;
+    padding: 0.4rem;
+}
+
+.codeViewer header h4{
+    overflow: visible;
+}
+
+.fid::after{
+    content: "";
+  display: inline-block;
+  width: 2px;
+  height: 100%;
+  background-color: #000;
+  vertical-align: middle;
+  border-radius: 4px;
+  margin-left: 10px;
+}
+
+.fname{
+    padding-left: 10px;
+}
+
+.copybtn{
+    display: flex;
+    flex-direction: row;
+    position: absolute;
+    right: 9rem;
+    padding: 0.1rem;
+}
+
+.copybtnimg{
+    width: 1.2rem;
+    padding-left: 5px;
+}
+
+/* .codeBody{
+    background-color: black;
+    width: 100%;
+    height: 100%;
+    overflow-y: scroll;
+    color: white;
+}
+
+.codeBody pre{
+    padding: 1rem;
+}
+
+.xxx{
+    background-color: aqua;
+} */
+
+.mainCode{
+    border-radius: 0;
+    padding: 0;
+    margin: 0;
+}
