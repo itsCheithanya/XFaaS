@@ -3,7 +3,7 @@
 The app was built using create-react-app command, this is necessary to install all the node modules which is otherwise not present in this repository due to size constraints
 
 ### 'Visualizing the connected graph'
-npm install react-graph-viz
+npm install react-graph-vis
 
 ### 'Material UI'
 In order to incorporate interactive features please the material UI libraries
