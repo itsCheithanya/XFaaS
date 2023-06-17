@@ -1,5 +1,5 @@
 import { useState,useEffect,useMemo } from "react";
-import {ColorModeContext,useMode} from "./theme"
+import {ColorModeContext,useMode} from "./scenes/theme"
 import {ThemeProvider} from "@mui/material"
 import Topbar from "./scenes/global/Topbar";
 import CssBaseline from '@mui/material/CssBaseline';
@@ -11,7 +11,9 @@ import Invocation from "./scenes/invocations/Invocation";
 import UserGraphs from "./scenes/graphs/Usergraphs";
 import GraphComponent from "./scenes/graphs/Refgraph";
 import GraphVisualization from "./scenes/graphs/Refgraph";
-
+import Test from "./components/Test";
+import ResponsiveAppBar from "./components/App-bar";
+import MyTable from "./components/Table";
 var data = {
   Nodes: [
     {
@@ -60,21 +62,27 @@ var data = {
 
 
 function App() {
+ 
 const [theme,colorMode]=useMode();
   return (
+    <>
+    
     <ColorModeContext.Provider value={colorMode}>
+      
       <ThemeProvider theme={theme}>
         <CssBaseline />
             <div className="app"> 
               <main className="context">
-                <Topbar />
+                <ResponsiveAppBar/>
 
+               
              
-              
+          
         <Routes>
-          {/* <Route path="/" element={}/> */}
+          <Route path="/" element={<Invocation/>}/>
             
-           <Route path="/" element={<Bar/>}/>
+           <Route path="/bar" element={<Bar/>}/>
+           <Route path="/invo" element={<MyTable/>}/>
         
 
         </Routes>
@@ -84,7 +92,7 @@ const [theme,colorMode]=useMode();
 
         </ThemeProvider>
       </ColorModeContext.Provider>
-  
+  </>
   
   );
 }
