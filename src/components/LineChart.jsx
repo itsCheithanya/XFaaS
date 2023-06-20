@@ -140,7 +140,7 @@ const LineChart = ({invocationId}) => {
             tickSize: 5,
             tickPadding: 5,
             tickRotation: 0,
-            legend: 'transportation',
+            legend: 'Days',
             legendOffset: 36,
             legendPosition: 'middle'
         }}
@@ -148,7 +148,7 @@ const LineChart = ({invocationId}) => {
             tickSize: 5,
             tickPadding: 5,
             tickRotation: 0,
-            legend: 'no_of_invocations',
+            legend: 'Number Of Invocations',
             legendOffset: -40,
             legendPosition: 'middle'
         }}

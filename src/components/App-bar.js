@@ -12,13 +12,22 @@ import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
+import { useNavigate } from 'react-router-dom';
+import { useAuthStatus } from '../hooks/useAuthStatus';
+import { useDispatch } from "react-redux";
+import { setLogout } from "../state";
+
+
 
 const pages = ['Main', 'About Us', 'Contact'];
 const settings = ['Profile', 'Logout'];
 
 function ResponsiveAppBar() {
+  const navigate = useNavigate();
+  const dispatch=useDispatch();
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
+  const [result,setResult]=useAuthStatus();
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -30,10 +39,17 @@ function ResponsiveAppBar() {
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
   };
-
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
+    setResult({
+      isLoading: false,
+      isAuthorized: false,
+      username: "",
+    });
+    dispatch(setLogout())
+    navigate("/");
   };
+  
 
   return (
     <AppBar position="static">
@@ -149,6 +165,7 @@ function ResponsiveAppBar() {
             >
               {settings.map((setting) => (
                 <MenuItem key={setting} onClick={handleCloseUserMenu}>
+                
                   <Typography textAlign="center">{setting}</Typography>
                 </MenuItem>
               ))}
