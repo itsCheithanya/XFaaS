@@ -10,7 +10,6 @@ import Invocation from "./scenes/invocations/Invocation";
 import UserGraphs from "./scenes/graphs/Usergraphs";
 import GraphComponent from "./scenes/graphs/Refgraph";
 import GraphVisualization from "./scenes/graphs/Refgraph";
-import Test from "./components/Test";
 import ResponsiveAppBar from "./components/App-bar";
 import Login from "./scenes/login/Login";
 import { useSelector } from "react-redux";
