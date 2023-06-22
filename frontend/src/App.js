@@ -17,7 +17,7 @@ function App() {
       <div className="tabs">
 
       </div>
-         <AllwfTable /> 
+      <AllwfTable /> 
       <div className="FooterBox">
 
       </div>
