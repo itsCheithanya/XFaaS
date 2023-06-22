@@ -7,36 +7,26 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
+import { Link } from 'react-router-dom';
 
 const columns = [
-  { id: 'ID', label: 'Deployment ID', align: 'center', minWidth: 170 },
-  { id: 'time', label: 'Deployment Date/Time', align: 'center', minWidth: 100 },
-  { id: 'config', label: 'Configuration', align: 'center', minWidth: 100 },
+  { id: 'workflow', label: 'All workflows', align: 'center', minWidth: 80 },
+  { id: 'time', label: 'Executed at', align: 'center', minWidth:80},
 ];
 
-function createData(ID, time, config) {
-  return { ID, time, config };
+function createData(workflow, time) {
+  return {workflow,time};
 }
 
 const rows = [
-  createData(100001, "10-6-2023", "config A"),
-  createData(100002, "23-5-2023", "config B"),
-  createData(100003, "07-6-2023", "config C"),
-  createData(100004, "02-5-2023", "config D"),
-  createData(100005, "19-5-2023", "config E"),
-  createData(100006, "13-4-2023", "config F"),
-  createData(100007, "29-5-2023", "config G"),
-  createData(100008, "10-6-2023", "config H"),
-  createData(100009, "25-5-2023", "config I"),
-  createData(100010, "10-6-2023", "config J"),
-  createData(100011, "20-3-2023", "config K"),
-  createData(100012, "19-5-2023", "config L"),
-  createData(100013, "01-1-2023", "config M"),
-
-
+  createData(100001,"10-02-2023,10:50 AM"),
+  createData(100002,"06/05/2023,11:43 AM"),
+  createData(100003,"05/01/2023,5:29 PM"),
+  createData(100004,"28/05/2023,7:40 PM"),
+  createData(100005,"19/04/2023,8:12 PM"),
 ];
 
-export default function MyTable() {
+export default function AllwfTable() {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
@@ -63,27 +53,26 @@ export default function MyTable() {
                     >
                     {column.label}
                     </TableCell>
+
                 ))}
                 </TableRow>
             </TableHead>
             <TableBody>
                 {rows
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((row) => {
+                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                  .map((row) => {
                     return (
-                    <TableRow hover role="checkbox" tabIndex={-1} key={row.name}>
-                        {columns.map((column) => {
-                        const value = row[column.id];
-                        return (
-                            <TableCell key={column.id} align={column.align}>
-                            {value}
-                            </TableCell>
-                        );
-                        })}
-                    </TableRow>
+                      <TableRow hover role="checkbox" tabIndex={-1} key={row.name}>
+                        <TableCell key={columns[0].id} align={columns[0].align}>
+                          <Link to="/wf">{row[columns[0].id]}</Link>
+                        </TableCell>
+                        <TableCell key={columns[1].id} align={columns[1].align}>
+                          {row[columns[1].id]}
+                        </TableCell>
+                      </TableRow>
                     );
-                })}
-            </TableBody>
+                  })}
+              </TableBody>
             </Table>
         </TableContainer>
         <TablePagination
