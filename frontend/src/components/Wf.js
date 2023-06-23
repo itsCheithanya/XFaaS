@@ -106,7 +106,6 @@ const GraphWrapper = (props) => {
 
 
 
-
 const Wf = (props) => {
 
     //initialize it with a dummy data to prevent loading error
@@ -114,83 +113,57 @@ const Wf = (props) => {
       "wfid": "",
       "wfname": "",
       "executedTime": "",
-      "nodee": [
+      "graphs":{
+      "nodes": [
         { "id": 1, "label": "Node A", "color": "41e0c9" },
         { "id": 2, "label": "Node B", "color": "#41e0c9" },
         { "id": 3, "label": "Node C", "color": "#41e0c9" },
         { "id": 4, "label": "Node D", "color": "#41e0c9" },
         { "id": 5, "label": "Node E", "color": "#41e0c9" }
       ],
-      "edgee": [
+      "edges": [
         { "from": 1, "to": 2 },
         { "from": 1, "to": 5 },
         { "from": 1, "to": 3 },
         { "from": 2, "to": 4 },
         { "from": 2, "to": 5 }
       ]
+      }
     })
     const location = useLocation();
 
     useEffect(() => {
       const params = new URLSearchParams(location.search);    
-      const wfnametemp = params.get('wfname');
+      const wfid = params.get('wfid');
 
-      axios.post('/getwfdetails', {"wfname":wfnametemp})
+      axios.post('/getwfdetails', {"wfid":wfid})
       .then(response => {
-        console.log(response.data);
-         const d =  {
-          "wfid": "WF002",
-          "wfname": "Workflow 2",
-          "executedTime": "2023-06-23 12:45:00",
-          "nodee": new Array({ "id": 1, "label": "Node A", "color": "41e0c9" }, { "id": 2, "label": "Node B", "color": "#41e0c9" }, { "id": 3, "label": "Node C", "color": "#41e0c9" }, { "id": 4, "label": "Node D", "color": "#41e0c9" }, { "id": 5, "label": "Node E", "color": "#41e0c9" }),
-          "edgee": [
-            { "from": 1, "to": 2 },
-            { "from": 1, "to": 5 },
-            { "from": 1, "to": 3 },
-            { "from": 2, "to": 4 },
-            { "from": 2, "to": 5 },
-            { "from": 2, "to": 3 },
-            { "from": 3, "to": 3 }
-          ]
-        }
+          const resObj = JSON.parse(response.data)
+          console.log(resObj);
+        //  const d =  {
+        //   "wfid": "WF002",
+        //   "wfname": "Workflow 2",
+        //   "executedTime": "2023-06-23 12:45:00",
+        //   "graphs":{
+        //   "nodee": new Array({ "id": 1, "label": "Node A", "color": "41e0c9" }, { "id": 2, "label": "Node B", "color": "#41e0c9" }, { "id": 3, "label": "Node C", "color": "#41e0c9" }, { "id": 4, "label": "Node D", "color": "#41e0c9" }, { "id": 5, "label": "Node E", "color": "#41e0c9" }),
+        //   "edgee": [
+        //     { "from": 1, "to": 2 },
+        //     { "from": 1, "to": 5 },
+        //     { "from": 1, "to": 3 },
+        //     { "from": 2, "to": 4 },
+        //     { "from": 2, "to": 5 },
+        //     { "from": 2, "to": 3 },
+        //     { "from": 3, "to": 3 }
+        //   ]
+        // }
+        // }
 
-        setWfdetails(d)
+        setWfdetails(resObj)
       })
       .catch(error => {
         // Handle any errors
         console.error(error);
       });
-
-    //   fetch('/getwfdetails', {method: 'get'})
-    //   .then(response => {
-    //   if (!response.ok) {
-    //     throw new Error(response.status + ' ' + response.statusText);
-    //   }
-    //   return response.json();
-    //   })
-    //   .then(data => {
-    //     const d =  {
-    //       "wfid": "WF002",
-    //       "wfname": "Workflow 2",
-    //       "executedTime": "2023-06-23 12:45:00",
-    //       "nodee": new Array({ "id": 1, "label": "Node A", "color": "41e0c9" }, { "id": 2, "label": "Node B", "color": "#41e0c9" }, { "id": 3, "label": "Node C", "color": "#41e0c9" }, { "id": 4, "label": "Node D", "color": "#41e0c9" }, { "id": 5, "label": "Node E", "color": "#41e0c9" }),
-    //       "edgee": [
-    //         { "from": 1, "to": 2 },
-    //         { "from": 1, "to": 5 },
-    //         { "from": 1, "to": 3 },
-    //         { "from": 2, "to": 4 },
-    //         { "from": 2, "to": 5 },
-    //         { "from": 2, "to": 3 },
-    //       ]
-    //     }
-
-    //     setWfdetails(d)
-
-    // })
-    // .catch(error => {
-    //   console.error('Error:', error);
-    // });
-
 
     }, [location]);
     
@@ -213,7 +186,8 @@ const Wf = (props) => {
       <div className="box1">
         <p>Workflow Parameters: {} </p>
       </div>
-       <GraphWrapper node={wfdetails.nodee.map(item => ({ ...item }))} edge={wfdetails.edgee.map(item => ({ ...item }))}/> 
+
+       <GraphWrapper node={wfdetails.graphs.nodes.map(item => ({ ...item }))} edge={wfdetails.graphs.edges.map(item => ({ ...item }))}/> 
 
       <DeploymentTable></DeploymentTable>
     

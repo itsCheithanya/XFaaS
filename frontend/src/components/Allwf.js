@@ -11,12 +11,13 @@ import { Link } from 'react-router-dom';
 import axios from 'axios'
 
 const columns = [
+  { id: 'wfid', label: 'Workflow ID', align: 'center', minWidth: 80 },
   { id: 'workflow', label: 'All workflows', align: 'center', minWidth: 80 },
   { id: 'time', label: 'Executed at', align: 'center', minWidth:80},
 ];
 
-function createData(workflow, time) {
-  return {workflow,time};
+function createData(wfid,workflow, time) {
+  return {wfid,workflow,time};
 }
 
 // const rows = [
@@ -51,7 +52,7 @@ export default function AllwfTable() {
         // Process the data
         var tempRows = []
         response.data.forEach(element => {
-          tempRows.push(createData(element["wfname"],element["executedTime"]))
+          tempRows.push(createData(element["wfid"],element["wfname"],element["executedTime"]))
         });
         console.log("logging temprows");
         console.log(tempRows);
@@ -115,11 +116,16 @@ export default function AllwfTable() {
                     return (
                       <TableRow hover role="checkbox" tabIndex={-1} key={row.name}>
                         <TableCell key={columns[0].id} align={columns[0].align}>
-                          <Link to={`/wf?wfname=${row[columns[0].id]}`}>{row[columns[0].id]}</Link>
-                          {/* <Link to={{ pathname: '/wf', state: { "wfname": `${row[columns[0].id]}`} }}>{row[columns[0].id]}</Link> */}
+                          {row[columns[0].id]}
                         </TableCell>
                         <TableCell key={columns[1].id} align={columns[1].align}>
-                          {row[columns[1].id]}
+                          <Link to={`/wf?wfid=${row[columns[0].id]}`}>{row[columns[1].id]}</Link>
+
+                          {/* <Link to={{ pathname: '/wf', state: { "wfname": `${row[columns[0].id]}`} }}>{row[columns[0].id]}</Link> */}
+
+                        </TableCell>
+                        <TableCell key={columns[2].id} align={columns[2].align}>
+                          {row[columns[2].id]}
                         </TableCell>
                       </TableRow>
                     );
