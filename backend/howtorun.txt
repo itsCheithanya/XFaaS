@@ -1,0 +1,3 @@
+1) Install all the dependencies
+2) Install nodemon - npm i nodemon -D
+3) To run use cmd - npm run dev
