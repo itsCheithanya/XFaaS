@@ -2,6 +2,9 @@ import React, { useState } from 'react';
 
 import './CodeViewer.css';
 import ResponsiveAppBar from './App-bar';
+import { useMode } from '../theme';
+import {ThemeProvider} from "@mui/material"
+
 
 function CodeViewer(props) {
   const [text, setText] = useState(`
@@ -35,11 +38,16 @@ function CodeViewer(props) {
     }
   };
 
-  return (
+  const [theme]=useMode();
+
+  return(
+
+  <ThemeProvider theme={theme}>
+   
     <div>
-      <header className="App-header">
+     
         <ResponsiveAppBar />
-      </header>
+    
       <div className="codeViewer">
         <body>
           <h4 className="fid">Func_ID</h4>
@@ -72,6 +80,7 @@ function CodeViewer(props) {
         </div>
       </div>
     </div>
+    </ThemeProvider>
   );
 }
 

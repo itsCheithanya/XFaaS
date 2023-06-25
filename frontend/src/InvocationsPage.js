@@ -12,9 +12,12 @@ import "./InvocationsPage.css"
 import  Graph  from 'react-graph-vis';
 import ResponsiveAppBar from './components/App-bar';
 import { useNavigate } from 'react-router-dom';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Button from '@mui/material/Button';
 import GraphTable from './components/GraphTable';
+import axios from "axios";
+import { useLocation } from "react-router-dom";
+
 
 
 var data = {
@@ -72,7 +75,11 @@ const GraphWrapper = () => {
 
   const options = {
     layout: {
-        hierarchical: false,
+        hierarchical: {
+          enabled:true,
+          direction:'LR',
+        },
+        improvedLayout:true,
       },
       edges: {
         arrows: 'to',
@@ -93,10 +100,10 @@ const GraphWrapper = () => {
       },
       opacity: 1,
   
-      shape:"circle",
+      shape:"square",
   
       font: {
-        "size": 16,
+        "size": 18,
         "face": "ariel",
         
       },
@@ -104,41 +111,23 @@ const GraphWrapper = () => {
   
     },
   
-      physics: {
-        enabled: true,
-        barnesHut: {
-          gravitationalConstant: -3000,
-          centralGravity: 0.1,
-          springLength: 100,
-          springConstant: 0.04,
-          damping: 0.09,
-        },
-        stabilization: {
-          enabled: false
-        },
-  
-        layout: {
-          randomSeed: 42, 
-        },
-  
-        
-      },
+    
     
   };
 
   const graph = {
     nodes: [
-        { id: 1, label: "1", color: "41e0c9" },
-        { id: 2, label: "2", color: "#41e0c9" },
-        { id: 3, label: "3", color: "#41e0c9" },
-        { id: 4, label: "4", color: "#41e0c9" },
-        { id: 5, label: "5", color: "#41e0c9" }
+        { id: 101, label: "101",},
+        { id: 102, label: "102",  },
+        { id: 103, label: "103", },
+        { id: 104, label: "104",  },
+        { id: 105, label: "105",  }
       ],
       edges: [
-        { from: 1, to: 2 },
-        { from: 1, to: 3 },
-        { from: 2, to: 4 },
-        { from: 2, to: 5 }
+        { from: 101, to: 102 },
+        { from: 101, to: 103 },
+        { from: 102, to: 104 },
+        { from: 102, to: 105 }
       ]
   };
 
@@ -159,8 +148,21 @@ const GraphWrapper = () => {
 
 
 function InvocationsPage() {
+  const location=useLocation();
+  const [depdetails,setDepdetails]=useState({})
+  useEffect(()=>{
+    const params=new URLSearchParams(location.search);
+    const depid=params.get("wf_deployment_id");
+    axios.post("/api/workflowId/deployments/deploymentId/",{"wf_deploymnet_id":depid}).then(res=>{
+      const depObj=res.data
+      console.log(depObj);
+    }).catch(err=>
+      console.error(err)
+    )
+  },[location])
 
   const [activeComponent, setActiveComponent] = useState('GraphWrapper');
+  const navigate=useNavigate();
 
   const handlegraphClick = () => {
     setActiveComponent('GraphWrapper');
@@ -169,15 +171,18 @@ function InvocationsPage() {
   const handleTableClick = () => {
     setActiveComponent('GraphTable');
   };
+  const handleInvoClick=()=>{
+          navigate("/wf/deployment/invocations");
+  }
  
 const [theme]=useMode();
   return (
     <>
       <ThemeProvider theme={theme}>
         <div className="app">
-          <div className="header">
+         
               <ResponsiveAppBar />
-          </div> 
+        
           <div className="button-container">
           <Button 
             color="primary"
@@ -191,20 +196,19 @@ const [theme]=useMode();
             variant="outlined"
             onClick={handleTableClick}>Table View
             </Button>
+            <Button
+            color="primary"
+            size="large"
+            variant="outlined"
+            onClick={handleInvoClick}>Invocations 
+            </Button>
         </div>
         {activeComponent === 'GraphWrapper' ? <GraphWrapper /> : <GraphTable />}
 
-
-          <main className="context">
-                
-            <Invocation />
-            <Bar />
-
-          </main>
         </div>
         
       </ThemeProvider>
-      <div className= "FooterBox" />
+   
   </>
   
   );

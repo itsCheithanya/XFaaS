@@ -6,45 +6,40 @@ import { tokens } from "../theme";
 var testData=[
     {
       "country": "wf1",
-      "hot dog": 5,
-      "kebab": 198,
-      "kebabColor": "hsl(343, 70%, 50%)",
+      "wf1": 198,
+      
     },
     {
       "country": "wf2",
-      "hot dog": 21,
-      "hot dogColor": "hsl(22, 70%, 50%)",
+      "wf2": 21,
+     
      
     },
     {
       "country": "wf3",
-      "donut": 98,
-      "donutColor": "hsl(145, 70%, 50%)"
+      "wf3": 98,
+  
     },
     {
       "country": "wf4",
-      
-      "fries": 197,
-      "friesColor": "hsl(23, 70%, 50%)",
+      "wf4": 197,
+   
   
     },
     {
       "country": "wf5",
-    
-     
-      "sandwich": 131,
-      "sandwichColor": "hsl(82, 70%, 50%)",
-     
+      "wf5": 131,
+  
     },
     {
       "country": "wf6",
-      "donut": 759,
-      "donutColor": "hsl(132, 70%, 50%)"
+      "wf6": 759,
+     
     },
     {
       "country": "wf7",
       "hot dog": 500,
-      "hot dogColor": "hsl(278, 70%, 50%)",
+  
      
     }
   ];
@@ -89,12 +84,12 @@ const BarChart =()=>{
           }}
 
         keys={[
-            'hot dog',
-            'burger',
-            'sandwich',
-            'kebab',
-            'fries',
-            'donut'
+            'wf1',
+            'wf2',
+            'wf3',
+            'wf4',
+            'wf5',
+            'wf6'
         ]}
 
         indexBy="country"

@@ -6,8 +6,13 @@ import { Box, IconButton } from '@mui/material';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import Line from '../line';
 import Bar from '../bar';
+import { useMode } from '../../theme';
+import { ThemeProvider } from '@emotion/react';
+import ResponsiveAppBar from "../../components/App-bar";
 
-const Invocation = () => {
+
+const Invocation = (InvId) => {
+ const id= InvId;
   const [invocationList, setInvocationList] = useState([]);
   const [selectedInvocation, setSelectedInvocation] = useState(null);
 
@@ -69,15 +74,15 @@ const Invocation = () => {
       
   }
 
+ 
+  const [theme]=useMode();
   return (
-    
-
-   
-      <>
-      
-        <Box display="flex" width= '100%' justifyContent="space-around"  p={30} >
+    <>
+      <ThemeProvider theme={theme}>
+      <ResponsiveAppBar />
+        <Box display="flex" width= '100%' justifyContent="space-around"  p={2}  >
       <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
-      <h1>Invocations</h1>
+      <h1>Depolyment Invocations</h1>
         {Object.keys(invocationList).map((key) => (
           <ListItem
             key={key}
@@ -94,10 +99,12 @@ const Invocation = () => {
 
       </List>
       { selectedInvocation &&  <Line invocationId={selectedInvocation}/> }
-     
+     <Bar/>
   
     </Box>
+    </ThemeProvider>
       </>
+
    
     
      

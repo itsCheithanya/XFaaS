@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { createTheme, ThemeProvider, styled } from '@mui/material/styles';
 
+
 const BoxContainer = styled('div')(({ theme }) => ({
   width: '70%',
   padding: theme.spacing(2),
@@ -28,7 +29,7 @@ const Welcome = () => {
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center',
-            height: '50vh',
+            height: '30vh',
             marginLeft: '29%',
             marginRight: '25%',
           }}
@@ -36,8 +37,10 @@ const Welcome = () => {
           <div style={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
             <BoxContainer style={{ opacity: showText ? 1 : 0 }}>
               {showText && (
-                <h1 style={{ fontSize: '40px', color: 'blue' }}>Manage your workflows</h1>
+                <h1 style={{ fontSize: '35px', color: 'Black' }}>Manage your workflows<br/> <h3  style={{ fontSize: '20px', color: 'black', paddingRight:'20px' }}>with XFaaS</h3></h1>
+                
               )}
+              
             </BoxContainer>
           </div>
         </div>

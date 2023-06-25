@@ -1,0 +1,68 @@
+# Node Id need not be a complex id, a locally unique id within the context of the workflow
+{
+  "WorkflowOwner": "String",
+  "Workflow Id": "uuid",
+  "WorkflowName": "ImgProcessingFanoutMulticloudAWSToAzure",
+  "WorkflowDescription": "String",
+  "WorkflowVersion": "String",
+  "PackageUrl": "String", [S3 or blob (all paths for the nodes are within the PackageUrl)] 
+  "Nodes": [
+    {
+      "NodeId": "fm9m",
+      "ModuleName": "String" [Optional] (if present then ModuleName.NodeName is globally unique),
+      "NodeName": "Resize",
+      "Path": "examples/image-processing-diamond-multicloud-aws-to-az/src/Resize",
+      "EntryPoint": "func.py",
+      "MemoryInMB": 512
+    },
+    {
+      "NodeId": "b74b",
+      "NodeName": "Mobilenet",
+      "Path": "examples/image-processing-diamond-multicloud-aws-to-az/src/Mobilenet",
+      "EntryPoint": "func.py",
+      "MemoryInMB": 512
+    },
+    {
+      "NodeId": "3ycp",
+      "NodeName": "Resnet",
+      "Path": "examples/image-processing-diamond-multicloud-aws-to-az/src/Resnet",
+      "EntryPoint": "func.py",
+      "MemoryInMB": 512
+    },
+    {
+      "NodeId": "bq21",
+      "NodeName": "Squeezenet",
+      "Path": "examples/image-processing-diamond-multicloud-aws-to-az/src/Squeezenet",
+      "EntryPoint": "func.py",
+      "MemoryInMB": 512
+    },
+    {
+      "NodeId": "tyvq",
+      "NodeName": "Union",
+      "Path": "examples/image-processing-diamond-multicloud-aws-to-az/src/Union",
+      "EntryPoint": "func.py",
+      "MemoryInMB": 512
+    },
+    {
+      "NodeId": "256",
+      "NodeName": "CollectLogs",
+      "Path": "examples/image-processing-diamond-multicloud-aws-to-az/src/CollectLogs",
+      "EntryPoint": "func.py",
+      "MemoryInMB": 512
+    }
+  ],
+  "Edges": [
+        {
+            "fm9m": ["b74b"]
+        }, 
+        {   
+            "b74b": ["3ycp"]
+        }, 
+        {
+            "3ycp": ["bq21"]
+        },
+        {
+            "bq21": ["tyvq"]
+        }
+    ]
+}

@@ -1,0 +1,23 @@
+{
+    "wf_id": "48a41d8e-fbb3-41c4-ad7c-5a0ac9ee83ad",  # Id for workflow
+    "wf_refactored_id": "reference to previous",
+    "wf_deployment_name": "dummy-deployment-name",  # Deployment name
+    "wf_deployment_id": "82097845-56fb-48ec-8bcd-3f1ab70c46c3", # Deployment Id
+    "wf_deployment_time": "2023-01-22 08:40:58.629201", # Deployment timestamp
+    "wf_dc_config": {
+        "criw": {"region": "ap-south-1", "csp": "AWS"}, 
+        "fvrf": {"region": "Central India", "csp": "Azure"}
+    }, # data centre config description
+    "func_deployment_config": {
+        "fm9m": {
+            "resource_id": "function-uuid-within-data-centre (ARN)",
+            "dc_config_id": "criw",
+            "endpoint": "url for function invocation created on deployment time",
+            # NOTE - check for url for function management. 
+        },
+        "b74b": "criw",
+        "3ycp": "fvrf",
+        "bq21": "fvrf",
+        "tyvq": "fvrf"
+    }, # partition config mapping of [f_id] -> [dc_config_id]
+}

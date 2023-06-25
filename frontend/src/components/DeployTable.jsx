@@ -7,29 +7,43 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
-import { Link } from 'react-router-dom';
+import { Link, Navigate, useLocation, useNavigate } from 'react-router-dom';
+import Invocation from '../scenes/invocations/Invocation'
+import { ListItem } from '@mui/material';
+import { useState } from 'react';
+import { useEffect } from 'react';
+
 
 const columns = [
-  { id: 'ID', label: 'Func ID', align: 'center', minWidth: 170 },
-  { id: 'CSP', label: 'CSP', align: 'center', minWidth: 100 },
-  { id: 'Status', label: 'Status', align: 'center', minWidth: 100 },
+  { id: 'wf_refactored_id', label: 'Deployment ID', align: 'center', minWidth: 170 },
+  { id: 'wf_deployment_time', label: 'Deployment Date/Time', align: 'center', minWidth: 100 },
+  { id: 'wf_deployment_name', label: 'Deployment name', align: 'center', minWidth: 100 },
 ];
 
-function createData(ID, CSP, Status) {
-  return { ID, CSP, Status };
+function createData(wf_refactored_id, wf_deployment_time, wf_deployment_name) {
+  return { wf_refactored_id, wf_deployment_time, wf_deployment_name };
 }
 
-const rows = [
-  createData(101, "Azure", "Executed"),
-  createData(102, "Azure", "Executed"),
-  createData(103, "Azure", "Running"),
-  createData(104, "AWS", "Waiting"),
-  createData(105, "AWS", "Waiting"),
-];
 
-export default function GraphTable() {
+export default function DeployTable({alldep}) {
+  const location=useLocation();
+  const [rows,setRows]=useState([])
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  const deparray=alldep;
+
+
+console.log(deparray)
+
+useEffect(() => {
+  const temprows=[]
+  deparray.forEach((dep)=>{
+   temprows.push(createData(dep.wf_refactored_id, dep.wf_deployment_time, dep.wf_deployment_name)); 
+  })
+
+  setRows(temprows);
+},);
+console.log(rows);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -39,9 +53,10 @@ export default function GraphTable() {
     setRowsPerPage(+event.target.value);
     setPage(0);
   };
+ 
 
   return (
-      <Paper sx={{width: '70%', overflow: 'hidden',margin: '0 auto', border: '2px solid blue', marginBottom: '20px', paddingBottom: '20px' }}>
+      <Paper sx={{width: '70%', overflow: 'hidden',margin: '0 auto', border: '2px solid black', marginBottom: '20px', paddingBottom: '20px' }}>
         <TableContainer sx={{ maxHeight: 440 }}>
             <Table stickyHeader aria-label="sticky table">
               <TableHead>
@@ -64,7 +79,9 @@ export default function GraphTable() {
                     return (
                       <TableRow hover role="checkbox" tabIndex={-1} key={row.name}>
                         <TableCell key={columns[0].id} align={columns[0].align}>
-                        <Link to="/wf/CodeViewer">{row[columns[0].id]}</Link>
+                        <Link to={`/wf/deployment?wf_deployment_id=${row[columns[0].id]}`}>
+                          {row[columns[0].id]}
+                          </Link>
                         </TableCell>
                         <TableCell key={columns[1].id} align={columns[1].align}>
                           {row[columns[1].id]}

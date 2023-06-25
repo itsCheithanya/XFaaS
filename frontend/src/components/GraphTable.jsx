@@ -9,24 +9,26 @@ import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import { Link } from 'react-router-dom';
 
+
 const columns = [
-  { id: 'workflow', label: 'All workflows', align: 'center', minWidth: 80 },
-  { id: 'time', label: 'Executed at', align: 'center', minWidth:80},
+  { id: 'ID', label: 'Func ID', align: 'center', minWidth: 170 },
+  { id: 'CSP', label: 'CSP', align: 'center', minWidth: 100 },
+  { id: 'Status', label: 'Status', align: 'center', minWidth: 100 },
 ];
 
-function createData(workflow, time) {
-  return {workflow,time};
+function createData(ID, CSP, Status) {
+  return { ID, CSP, Status };
 }
 
 const rows = [
-  createData(100001,"10-02-2023,10:50 AM"),
-  createData(100002,"06/05/2023,11:43 AM"),
-  createData(100003,"05/01/2023,5:29 PM"),
-  createData(100004,"28/05/2023,7:40 PM"),
-  createData(100005,"19/04/2023,8:12 PM"),
+  createData(101, "Azure", "Executed"),
+  createData(102, "Azure", "Executed"),
+  createData(103, "Azure", "Running"),
+  createData(104, "AWS", "Waiting"),
+  createData(105, "AWS", "Waiting"),
 ];
 
-export default function AllwfTable() {
+export default function GraphTable() {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
@@ -40,34 +42,36 @@ export default function AllwfTable() {
   };
 
   return (
-      <Paper sx={{width: '70%', overflow: 'hidden',margin: '0 auto', border: '2px solid blue', marginBottom: '20px', paddingBottom: '20px' }}>
+      <Paper sx={{width: '70%', overflow: 'hidden',margin: '0 auto', border: '2px solid black', marginBottom: '20px', paddingBottom: '20px' }}>
         <TableContainer sx={{ maxHeight: 440 }}>
             <Table stickyHeader aria-label="sticky table">
-            <TableHead>
-                <TableRow>
-                {columns.map((column) => (
-                    <TableCell
-                    key={column.id}
-                    align={column.align}
-                    style={{ minWidth: column.minWidth }}
-                    >
-                    {column.label}
-                    </TableCell>
-
-                ))}
-                </TableRow>
-            </TableHead>
-            <TableBody>
+              <TableHead>
+                  <TableRow>
+                  {columns.map((column) => (
+                      <TableCell
+                      key={column.id}
+                      align={column.align}
+                      style={{ minWidth: column.minWidth }}
+                      >
+                      {column.label}
+                      </TableCell>
+                  ))}
+                  </TableRow>
+              </TableHead>
+              <TableBody>
                 {rows
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                   .map((row) => {
                     return (
                       <TableRow hover role="checkbox" tabIndex={-1} key={row.name}>
                         <TableCell key={columns[0].id} align={columns[0].align}>
-                          <Link to="/wf">{row[columns[0].id]}</Link>
+                        <Link to="/wf/CodeViewer">{row[columns[0].id]}</Link>
                         </TableCell>
                         <TableCell key={columns[1].id} align={columns[1].align}>
                           {row[columns[1].id]}
+                        </TableCell>
+                        <TableCell key={columns[2].id} align={columns[2].align}>
+                          {row[columns[2].id]}
                         </TableCell>
                       </TableRow>
                     );
@@ -89,3 +93,5 @@ export default function AllwfTable() {
     
   );
 }
+
+

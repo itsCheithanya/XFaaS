@@ -2,26 +2,38 @@ import AllwfTable from './components/Allwf';
 import ResponsiveAppBar from './components/App-bar';
 import "./App.css";
 import Welcome from './components/Welcome';
+import { useMode } from './theme';
+import {Box, ThemeProvider} from "@mui/material"
+import { useAuthStatus } from './hooks/useAuthStatus';
 
 
 function App() {
-  
+  const [theme]=useMode();
+  const [result,setResult]=useAuthStatus();
+  const {isLoading,isAuthorized,username}=result;
+  console.log(isAuthorized);
+
   return (
-    <div className="App">
-      <header className="App-header">      
+ 
+    <ThemeProvider theme={theme}>
+ 
         <ResponsiveAppBar />
-      </header>
-
+     {/* {isAuthorized? */}
+    <div className="App">     
       <Welcome />
-
       <div className="tabs">
-
       </div>
       <AllwfTable /> 
-      <div className="FooterBox">
-
-      </div>
     </div>
+    {/* :  <>
+    <Box >
+<h1> ...404...</h1>
+<h5> ...NOT AUTHORISED USER...</h5>
+</Box>
+</>
+} */}
+    </ThemeProvider>
+  
   );
 }
 
