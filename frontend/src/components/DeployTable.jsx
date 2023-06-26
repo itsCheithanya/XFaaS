@@ -33,17 +33,18 @@ export default function DeployTable({alldep}) {
   const deparray=alldep;
 
 
-console.log(deparray)
-
+//console.log(deparray)
+const temprows=[]
 useEffect(() => {
-  const temprows=[]
+  
   deparray.forEach((dep)=>{
    temprows.push(createData(dep.wf_refactored_id, dep.wf_deployment_time, dep.wf_deployment_name)); 
   })
 
   setRows(temprows);
 },);
-console.log(rows);
+
+//console.log(rows);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
