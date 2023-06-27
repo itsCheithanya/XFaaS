@@ -20,13 +20,7 @@ function createData(workflowID,workflow, time) {
   return {workflowID,workflow,time};
 }
 
-// const rows = [
-//   createData(100001,"10/02/2023,10:50 AM"),
-//   createData(100002,"06/05/2023,11:43 AM"),
-//   createData(100003,"05/01/2023,5:29 PM"),
-//   createData(100004,"28/05/2023,7:40 PM"),
-//   createData(100005,"19/04/2023,8:12 PM"),
-// ];
+
 
 export default function AllwfTable() {
   const [page, setPage] = React.useState(0);
@@ -54,18 +48,10 @@ export default function AllwfTable() {
   })
 
   },[])
-  // const handleWorkflowclick= async (id)=>{
-  //           try{
-  //             const res=await fetch(`/api/workflows/${id}`);
-  //             const json=await  res.json();
-  //             console.log(json)
-  //           }catch(err){
-  //             // console.log(err);
-  //           }
+
 
 
   
-  // }
 
   return (
       <Paper sx={{width: '70%', overflow: 'hidden',margin: '0 auto', border: '2px solid black', marginBottom: '20px', paddingBottom: '20px' }}>
@@ -93,7 +79,7 @@ export default function AllwfTable() {
                       <TableRow hover role="checkbox" tabIndex={-1} key={row.name}>
                         <TableCell key={columns[0].id} align={columns[0].align}>
                         <Link to={`/wf?wfid=${row[columns[0].id]}`}>{row[columns[0].id]}</Link>
-                        {/* <Link to="/wf" onClick={()=>handleWorkflowclick(row[columns[0].id])}>{row[columns[0].id]}</Link> */}
+                
                         </TableCell>
                         <TableCell key={columns[1].id} align={columns[1].align}>
                           {row[columns[1].id]}

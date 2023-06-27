@@ -2,24 +2,7 @@ let records = [
     {
       "wfid": "WF001",
       "wfname": "Workflow 1",
-      "WorkflowDescription": "Workflow 1 Description",
-      "executedTime": "2023-06-23 12:45:00",
-      "graphs": {
-        "nodes": [
-          { "id": 1, "label": "Node A" },
-          { "id": 2, "label": "Node B" },
-          { "id": 3, "label": "Node C" }
-        ],
-        "edges": [
-          { "from": 1, "to": 2 },
-          { "from": 1, "to": 3 }
-        ]
-      }
-    },
-    {
-      "wfid": "WF002",
-      "wfname": "Workflow 2",
-      "WorkflowDescription": "Workflow 2 Description",
+      "WorkflowDescription": "A worklfow for smart grid, smart grid is an electricity network allowing devices to communicate between suppliers to consumers, allowing them to manage demand, protect the distribution network, save energy and reduce costs",
       "executedTime": "2023-06-23 12:45:00",
       "graphs": {
         "nodes": [
@@ -34,6 +17,23 @@ let records = [
           { "from": 1, "to": 3 },
           { "from": 2, "to": 4 },
           { "from": 2, "to": 5 }
+        ]
+      }
+    },
+    {
+      "wfid": "WF002",
+      "wfname": "Workflow 2",
+      "WorkflowDescription": "Workflow 2 Description",
+      "executedTime": "2023-06-23 12:45:00",
+      "graphs": {
+        "nodes": [
+          { "id": 1, "label": "Node A" },
+          { "id": 2, "label": "Node B" },
+          { "id": 3, "label": "Node C" }
+        ],
+        "edges": [
+          { "from": 1, "to": 2 },
+          { "from": 1, "to": 3 }
         ]
       }
     },

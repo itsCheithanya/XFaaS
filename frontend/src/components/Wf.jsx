@@ -87,20 +87,8 @@ const Wf = () => {
     "wfname": "",
     "executedTime": "",
     "graphs":{
-    "nodes": [
-      { "id": 1, "label": "Node A",  },
-      { "id": 2, "label": "Node B",  },
-      { "id": 3, "label": "Node C", },
-      { "id": 4, "label": "Node D", },
-      { "id": 5, "label": "Node E", }
-    ],
-    "edges": [
-      { "from": 1, "to": 2 },
-      { "from": 1, "to": 5 },
-      { "from": 1, "to": 3 },
-      { "from": 2, "to": 4 },
-      { "from": 2, "to": 5 }
-    ]
+    "nodes": [],
+    "edges": []
     }
   });
   const [alldep,setAlldep]=useState([])
@@ -141,19 +129,7 @@ var deployments=[]
   });
   }, [location]);
   console.log(alldep);
-//   useEffect(()=>{
-//     const params=new URLSearchParams(location.search);
-//     const wfid=params.get("wfid");
-//    axios.post("/api/workflowId/deployments",{"wfid":wfid}).then(response=>{
-//     const depArr=response.data;
-//     console.log(depArr);
-//     setAlldep(depArr);
-//     console.log(alldep);
-    
-//    }).catch(error => {
-//     console.error(error);
-//   });
-//  },[wfdetails]);
+
 
   const [theme]=useMode();
 
@@ -180,7 +156,7 @@ var deployments=[]
       </div>
 
       <div className="box">
-        <h3>Workflow Parameters:  </h3>
+        <h3>Workflow Description:  </h3>
         <div className='box'>{wfdetails.WorkflowDescription}</div>
       </div>
       <GraphWrapper wfdetails={wfdetails}/>

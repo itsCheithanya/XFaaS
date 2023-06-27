@@ -82,7 +82,7 @@ const Invocation = (InvId) => {
       <ResponsiveAppBar />
         <Box display="flex" width= '100%' justifyContent="space-around"  p={2}  >
       <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
-      <h1>Depolyment Invocations</h1>
+      <h1>Deployment Invocations</h1>
         {Object.keys(invocationList).map((key) => (
           <ListItem
             key={key}

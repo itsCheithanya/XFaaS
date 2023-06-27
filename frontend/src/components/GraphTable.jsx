@@ -11,24 +11,26 @@ import { Link } from 'react-router-dom';
 
 
 const columns = [
+  { id: 'Fn', label: 'Func Name', align: 'center', minWidth: 170 },
   { id: 'ID', label: 'Func ID', align: 'center', minWidth: 170 },
   { id: 'CSP', label: 'CSP', align: 'center', minWidth: 100 },
   { id: 'Status', label: 'Status', align: 'center', minWidth: 100 },
 ];
 
-function createData(ID, CSP, Status) {
-  return { ID, CSP, Status };
+function createData(Fn,ID, CSP, Status) {
+  return { Fn,ID, CSP, Status };
 }
 
 const rows = [
-  createData(101, "Azure", "Executed"),
-  createData(102, "Azure", "Executed"),
-  createData(103, "Azure", "Running"),
-  createData(104, "AWS", "Waiting"),
-  createData(105, "AWS", "Waiting"),
+  createData("Mobilenet",101, "Azure", "Executed"),
+  createData("Squeezenet",102, "Azure", "Executed"),
+  createData("Resnet",103, "AWS", "Running"),
+  createData("Union",104, "AWS", "Waiting"),
+  createData("CollectLogs",105, "AWS", "Waiting"),
 ];
 
-export default function GraphTable() {
+export default function GraphTable({depdetails}) {
+  const deploymentdet=depdetails
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
@@ -64,14 +66,18 @@ export default function GraphTable() {
                   .map((row) => {
                     return (
                       <TableRow hover role="checkbox" tabIndex={-1} key={row.name}>
-                        <TableCell key={columns[0].id} align={columns[0].align}>
-                        <Link to="/wf/CodeViewer">{row[columns[0].id]}</Link>
+                          <TableCell key={columns[0].id} align={columns[0].align}>
+                          {row[columns[0].id]}
                         </TableCell>
                         <TableCell key={columns[1].id} align={columns[1].align}>
-                          {row[columns[1].id]}
+                        <Link to="/wf/CodeViewer">{row[columns[1].id]}</Link>
                         </TableCell>
+                    
                         <TableCell key={columns[2].id} align={columns[2].align}>
                           {row[columns[2].id]}
+                        </TableCell>
+                        <TableCell key={columns[3].id} align={columns[3].align}>
+                          {row[columns[3].id]}
                         </TableCell>
                       </TableRow>
                     );

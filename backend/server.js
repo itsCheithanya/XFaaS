@@ -14,7 +14,7 @@ app.use(express.json());
 
 app.get("/api/allWorkflows",(req,res)=>{
   res.json(records.records)
-    console.log("endpoint /api/allWorkflows hit")
+   // console.log("endpoint /api/allWorkflows hit")
 })
 
 app.post("/api/workflowId",(req,res)=>{
@@ -42,7 +42,7 @@ app.post("/api/workflowId/deployments/deploymentId/", (req, res) => {
   return res.json(result);
 });
 //to get refractored wf details from depid/refid
-app.use("/api/workflowId/refactoredID/",(req,res)=>{
+app.post("/api/workflowId/refactoredID/",(req,res)=>{
   const clickedId = req.body.wf_deployment_id;
 console.log(clickedId)
   const ref = refractored.refractored;

@@ -1,13 +1,5 @@
-//import { useState,useEffect,useMemo } from "react";
 import {useMode} from "./theme"
 import {ThemeProvider} from "@mui/material"
-//import Topbar from "./scenes/global/Topbar";
-import Bar from "./scenes/bar/index";
-import Invocation from "./scenes/invocations/Invocation";
-//import UserGraphs from "./scenes/graphs/Usergraphs";
-//import GraphComponent from "./scenes/graphs/Refgraph";
-//import GraphVisualization from "./scenes/graphs/Refgraph";
-//import testData from "./components/data/testData";
 import "./InvocationsPage.css"
 import  Graph  from 'react-graph-vis';
 import ResponsiveAppBar from './components/App-bar';
