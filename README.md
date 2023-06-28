@@ -1,2 +1,2 @@
-# ![image](https://github.com/itsCheithanya/XFaaS/assets/85927700/af635396-7837-4b11-a0e5-9c3620667419)
-![image](https://github.com/itsCheithanya/XFaaS/assets/85927700/e22b18ab-1f5a-44f4-9872-a1247914cac4)
+# XFaaS
+XFaaS is a cross-platform deployment and orchestration engine that leverages Passage for authentication, enabling the seamless “zero-touch” portable deployment of workflows on AWS and Azure automatically generating necessary code wrappers for each FaaS provider, creating cloud queues to execute workflows across data centers, and coordinating with the native FaaS engine of a cloud provider for management and monitoring
