@@ -37,10 +37,10 @@ export default function AllwfTable() {
   };
   React.useEffect(()=>{
     axios.get('/api/allWorkflows').then(response=>{
-      console.log(response.data)
+      console.log(response)
       var rows=[]
       response.data.forEach(ele=>{
-        rows.push(createData(ele["wfid"],ele["wfname"],ele["executedTime"]))
+        rows.push(createData(ele["wfId"],ele["workflowName"],0))
       });
       setRows(rows);
     }).catch(err=>{

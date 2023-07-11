@@ -8,19 +8,92 @@ const refractored=require("./deployments/workflow1/deployment")
 const app = express();
 const port = 5000;
 
+//aws connectivity
+var AWS = require('aws-sdk');
+var SHARED_VARIABLE;
+// Set the region
+const region = "ap-south-1";
+AWS.config.update({ region });
+
+// Create an instance of the DynamoDB class
+const dynamodb = new AWS.DynamoDB();
+
+// Call the listTables method to retrieve the table names
+dynamodb.listTables({}, (err, data) => {
+  if (err) {
+    console.error('Error listing tables:', err);
+    console.error('Error message:', err.message);
+  } else {
+    const tableCount = data.TableNames.length;
+    console.log('Number of tables:', tableCount);
+
+    // Iterate over each table
+    
+    data.TableNames.forEach((tableName, index) => {
+      console.log(`Table name: ${tableName}`);
+      // Perform a scan operation on the table
+      const scanParams = {
+        TableName: tableName,
+      };
+ 
+      dynamodb.scan(scanParams, (err, scanData) => {
+        if (err) {
+          console.error(`Error scanning table ${tableName}:`, err);
+          console.error('Error message:', err.message);
+        } else {
+          if(tableName==="workflow_user_table"){
+         //   console.log(scanData);
+            SHARED_VARIABLE=scanData.Items;
+            // console.log(`Table ${tableName} contents:`, scanData.Items[0]);
+            // console.log(`Table ${tableName} contents:`, scanData.Items[1]);
+            // console.log(`Table ${tableName} contents:`, scanData.Items[2]);
+
+          }
+         
+        }
+
+      });
+    
+    });
+  }
+
+});
+
+
+
 app.use(cors());
 app.use(express.json());
 
 
 app.get("/api/allWorkflows",(req,res)=>{
-  res.json(records.records)
-   // console.log("endpoint /api/allWorkflows hit")
+  const workflowInfo = SHARED_VARIABLE.map((record) => {
+    const workflowName = record.WorkflowName.S;
+    const wfId = record.wf_id.S;
+    return { workflowName, wfId };
+  });
+
+   res.json(workflowInfo);
 })
 
 app.post("/api/workflowId",(req,res)=>{
-  resObj = records.records[parseInt(req.body.wfid.slice(-1), 10)-1]
 
-    res.json(JSON.stringify(resObj))
+  const wfIdToFetch = req.body.wfid; // Replace with the desired wfId
+
+  const fetchedObject = SHARED_VARIABLE.find(
+    (item) => item.wf_id.S == wfIdToFetch
+  );
+
+  
+  
+  if (fetchedObject) {
+    //console.log(fetchedObject);
+  } else {
+    console.log("Object not found.");
+  }
+
+  //resObj = records.records[parseInt(req.body.wfid.slice(-1), 10)-1]
+
+  res.json(JSON.stringify(fetchedObject))
 })
 
 app.post("/api/workflowId/deployments", (req, res) => {

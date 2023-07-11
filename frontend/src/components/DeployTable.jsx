@@ -34,15 +34,15 @@ export default function DeployTable({alldep}) {
 
 
 //console.log(deparray)
-const temprows=[]
-useEffect(() => {
+// const temprows=[]
+// useEffect(() => {
   
-  deparray.forEach((dep)=>{
-   temprows.push(createData(dep.wf_refactored_id, dep.wf_deployment_time, dep.wf_deployment_name)); 
-  })
+//   deparray.forEach((dep)=>{
+//    temprows.push(createData(dep.wf_refactored_id, dep.wf_deployment_time, dep.wf_deployment_name)); 
+//   })
 
-  setRows(temprows);
-},);
+//   setRows(temprows);
+// },);
 
 //console.log(rows);
 

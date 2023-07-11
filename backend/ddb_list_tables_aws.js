@@ -38,27 +38,36 @@ dynamodb.listTables({}, (err, data) => {
     console.log('Number of tables:', tableCount);
 
     // Iterate over each table
+    
     data.TableNames.forEach((tableName, index) => {
       console.log(`Table name: ${tableName}`);
-
       // Perform a scan operation on the table
       const scanParams = {
         TableName: tableName,
       };
-
+ 
       dynamodb.scan(scanParams, (err, scanData) => {
         if (err) {
           console.error(`Error scanning table ${tableName}:`, err);
           console.error('Error message:', err.message);
         } else {
-          console.log(`Table ${tableName} contents:`, scanData.Items);
+          if(tableName==="workflow_user_table"){
+            console.log(scanData);
+            console.log(`Table ${tableName} contents:`, scanData.Items[0]);
+            console.log(`Table ${tableName} contents:`, scanData.Items[1]);
+            console.log(`Table ${tableName} contents:`, scanData.Items[2]);
+
+          }
+         
         }
 
         // Check if all tables have been processed
-        if (index === tableCount - 1) {
-          console.log('Finished scanning all tables.');
-        }
+        // if (index === tableCount - 1) {
+        //   console.log('Finished scanning all tables.');
+        // }
       });
+    
     });
   }
+
 });
