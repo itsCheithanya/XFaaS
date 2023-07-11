@@ -8,6 +8,8 @@ const refractored=require("./deployments/workflow1/deployment")
 const app = express();
 const port = 5000;
 
+
+
 //aws connectivity
 var AWS = require('aws-sdk');
 var SHARED_VARIABLE;
@@ -41,14 +43,13 @@ dynamodb.listTables({}, (err, data) => {
           console.error(`Error scanning table ${tableName}:`, err);
           console.error('Error message:', err.message);
         } else {
-          if(tableName==="workflow_user_table"){
-         //   console.log(scanData);
+          if(tableName=="workflow_user_table"){
             SHARED_VARIABLE=scanData.Items;
-            // console.log(`Table ${tableName} contents:`, scanData.Items[0]);
-            // console.log(`Table ${tableName} contents:`, scanData.Items[1]);
-            // console.log(`Table ${tableName} contents:`, scanData.Items[2]);
-
+            console.log(SHARED_VARIABLE);
           }
+          // if(tableName=="workflow_deployment_table"){
+          // //  DEPLYOMENT_VARIABLE=scanData
+          // }
          
         }
 
@@ -58,7 +59,14 @@ dynamodb.listTables({}, (err, data) => {
   }
 
 });
-
+// Number of tables: 7
+// Table name: Test-invocation-table
+// Table name: test-instance-table-modified
+// Table name: test-invocation-table-modified
+// Table name: workflow_deployment_table
+// Table name: workflow_invocation_table
+// Table name: workflow_refactored_table
+// Table name: workflow_user_table
 
 
 app.use(cors());
@@ -77,23 +85,28 @@ app.get("/api/allWorkflows",(req,res)=>{
 
 app.post("/api/workflowId",(req,res)=>{
 
-  const wfIdToFetch = req.body.wfid; // Replace with the desired wfId
+  const wfIdToFetch = req.body.wfid; 
 
-  const fetchedObject = SHARED_VARIABLE.find(
+  const input = SHARED_VARIABLE.find(
     (item) => item.wf_id.S == wfIdToFetch
   );
-
-  
-  
-  if (fetchedObject) {
-    //console.log(fetchedObject);
-  } else {
-    console.log("Object not found.");
-  }
-
-  //resObj = records.records[parseInt(req.body.wfid.slice(-1), 10)-1]
-
-  res.json(JSON.stringify(fetchedObject))
+  var output = {
+    "wfid": input.wf_id.S,
+    "wfname": input.WorkflowName.S,
+    "graphs": {
+      "nodes": input.Nodes.L.map((node, index) => ({ "id": parseInt(node.M.NodeId.S), "label": node.M.NodeName.S })),
+      "edges": input.Edges.L.map(edge => {
+        var fromNode = Object.keys(edge.M)[0];
+        var toNodes = edge.M[fromNode].L.map(ele => ele.S);
+        return toNodes.map(toNode => ({
+          "from": parseInt(input.Nodes.L.find(node => node.M.NodeName.S === fromNode).M.NodeId.S),
+          "to": parseInt(input.Nodes.L.find(node => node.M.NodeName.S === toNode).M.NodeId.S)
+        }));
+      }).flat()
+    }
+  };
+ console.log(output);
+  res.json(JSON.stringify(output))
 })
 
 app.post("/api/workflowId/deployments", (req, res) => {
@@ -123,33 +136,10 @@ console.log(clickedId)
   console.log(result);
   return res.json(result);
 })
-// Start the server
+
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
 });
 
 
 
-  // Read data from deployments.json file
-//   fs.readFile(path.join(__dirname, 'samples', 'deployments.json'), 'utf8', (err, data) => {
-//     if (err) {
-//       console.error(err);
-//       return res.status(500).json({ error: 'Internal server error' });
-//     }
-    
-//     try {
-//       const jsonData = JSON.parse(data);
-      
-//       // Find the specific data based on the clicked_id
-//       const clickedData = jsonData.find(item => item.id === clickedId);
-      
-//       if (!clickedData) {
-//         return res.status(404).json({ error: 'Data not found' });
-//       }
-      
-//       return res.json(clickedData);
-//     } catch (err) {
-//       console.error(err);
-//       return res.status(500).json({ error: 'Internal server error' });
-//     }
-//   });

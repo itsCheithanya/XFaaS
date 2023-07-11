@@ -596,26 +596,28 @@ var input = {
   //     )).flat()
   //   }
   // };
+  
+  // console.log(JSON.stringify(output, null, 2));
+
+
   var output = {
     "wfid": input.wf_id.S,
     "wfname": input.WorkflowName.S,
     "graphs": {
-      "nodes": input.Nodes.L.map((node) => ({
-        "id": parseInt(node.M.NodeId.S),
-        "label": node.M.NodeName.S
-      })),
-      "edges": input.Edges.L.map((edge) => {
-        var fromNode = parseInt(Object.keys(edge.M)[0].slice(4)); // extract the from nodeid
-        var toNodes = edge.M[Object.keys(edge.M)[0]].L.map((item) => parseInt(item.S.slice(4))); // extract the to nodeids
-        return toNodes.map((toNode) => ({
-          "from": fromNode,
-          "to": toNode
+      "nodes": input.Nodes.L.map((node, index) => ({ "id": parseInt(node.M.NodeId.S), "label": node.M.NodeName.S })),
+      "edges": input.Edges.L.map(edge => {
+        var fromNode = Object.keys(edge.M)[0];
+        var toNodes = edge.M[fromNode].L.map(ele => ele.S);
+        return toNodes.map(toNode => ({
+          "from": parseInt(input.Nodes.L.find(node => node.M.NodeName.S === fromNode).M.NodeId.S),
+          "to": parseInt(input.Nodes.L.find(node => node.M.NodeName.S === toNode).M.NodeId.S)
         }));
       }).flat()
     }
   };
   
   console.log(JSON.stringify(output, null, 2));
+  
 
   //edge.M.Object.keys(edge.M)[0].L.map((ele)=>ele.S)
   

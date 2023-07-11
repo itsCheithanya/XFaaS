@@ -28,14 +28,7 @@ function App() {
     <ThemeProvider theme={theme}>
  
         <ResponsiveAppBar />
-
-        <div className="App">     
-      <Welcome />
-      <div className="tabs">
-      </div>
-      <AllwfTable /> 
-    </div>
-    {/* {isAuthorized?
+    {isAuthorized?
     <div className="App">     
       <Welcome />
       <div className="tabs">
@@ -48,7 +41,7 @@ function App() {
 <h5> ...NOT AUTHORISED USER...</h5>
 </Box>
 </>):(<></>)
-}  */}
+} 
     </ThemeProvider>
   
   );
