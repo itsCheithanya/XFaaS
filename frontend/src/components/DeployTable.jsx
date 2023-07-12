@@ -15,13 +15,13 @@ import { useEffect } from 'react';
 
 
 const columns = [
-  { id: 'wf_refactored_id', label: 'Deployment ID', align: 'center', minWidth: 170 },
+  { id: 'wf_deployment_id', label: 'Deployment ID', align: 'center', minWidth: 170 },
   { id: 'wf_deployment_time', label: 'Deployment Date/Time', align: 'center', minWidth: 100 },
   { id: 'wf_deployment_name', label: 'Deployment name', align: 'center', minWidth: 100 },
 ];
 
-function createData(wf_refactored_id, wf_deployment_time, wf_deployment_name) {
-  return { wf_refactored_id, wf_deployment_time, wf_deployment_name };
+function createData(wf_deployment_id, wf_deployment_time, wf_deployment_name) {
+  return {wf_deployment_id, wf_deployment_time, wf_deployment_name };
 }
 
 
@@ -33,18 +33,18 @@ export default function DeployTable({alldep}) {
   const deparray=alldep;
 
 
-//console.log(deparray)
-// const temprows=[]
-// useEffect(() => {
+// console.log(deparray)
+const temprows=[]
+useEffect(() => {
   
-//   deparray.forEach((dep)=>{
-//    temprows.push(createData(dep.wf_refactored_id, dep.wf_deployment_time, dep.wf_deployment_name)); 
-//   })
+  deparray.forEach((dep)=>{
+   temprows.push(createData(dep.wf_deployment_id, dep.wf_deployment_time, dep.wf_deployment_name)); 
+  })
 
-//   setRows(temprows);
-// },);
+  setRows(temprows);
+},);
 
-//console.log(rows);
+console.log(rows);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);

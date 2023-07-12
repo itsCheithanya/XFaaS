@@ -51,11 +51,9 @@ dynamodb.listTables({}, (err, data) => {
           console.error(`Error scanning table ${tableName}:`, err);
           console.error('Error message:', err.message);
         } else {
-          if(tableName==="workflow_user_table"){
+          if(tableName=="workflow_deployment_table"){
             console.log(scanData);
-            console.log(`Table ${tableName} contents:`, scanData.Items[0]);
-            console.log(`Table ${tableName} contents:`, scanData.Items[1]);
-            console.log(`Table ${tableName} contents:`, scanData.Items[2]);
+      
 
           }
          

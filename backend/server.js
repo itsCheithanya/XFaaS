@@ -12,7 +12,7 @@ const port = 5000;
 
 //aws connectivity
 var AWS = require('aws-sdk');
-var SHARED_VARIABLE;
+var SHARED_VARIABLE,DEPLOYMENT_VARIABLE;
 // Set the region
 const region = "ap-south-1";
 AWS.config.update({ region });
@@ -45,11 +45,11 @@ dynamodb.listTables({}, (err, data) => {
         } else {
           if(tableName=="workflow_user_table"){
             SHARED_VARIABLE=scanData.Items;
-            console.log(SHARED_VARIABLE);
+       
           }
-          // if(tableName=="workflow_deployment_table"){
-          // //  DEPLYOMENT_VARIABLE=scanData
-          // }
+          if(tableName=="workflow_deployment_table"){
+            DEPLOYMENT_VARIABLE=scanData.Items
+          }
          
         }
 
@@ -105,15 +105,55 @@ app.post("/api/workflowId",(req,res)=>{
       }).flat()
     }
   };
- console.log(output);
   res.json(JSON.stringify(output))
 })
 
 app.post("/api/workflowId/deployments", (req, res) => {
   const clickedId = req.body.wfid;
-  const dep=deployments.deployments;
-console.log(dep);
-  return res.json(dep)
+
+  const input = DEPLOYMENT_VARIABLE.filter(item => item.wf_id.S === clickedId);
+ console.log(input);
+
+    var output = input.map(obj => {
+    var wf_id = obj.wf_id.S ? obj.wf_id.S: "";
+    var wf_refactored_id = obj.wf_refacored_id ? obj.wf_refacored_id.S : "";
+    var wf_deployment_name = obj.wf_deployment_name.S ?  obj.wf_deployment_name.S : "";
+    var wf_deployment_id = obj.wf_deployment_id.S ? obj.wf_deployment_id.S : "" ;
+    var wf_deployment_time = obj.wf_deployment_time.S ? obj.wf_deployment_time.S:"";
+    
+    var wf_dc_config = {};
+    Object.entries(obj.wf_dc_config.M).forEach(([key, value]) => {
+      wf_dc_config[key] = {
+        region: value.M.region.S,
+        csp: value.M.csp.S
+      };
+    });
+    
+    var func_deployment_config = {};
+    Object.entries(obj.func_deployment_config.M).forEach(([key, value]) => {
+      if (value.M) {
+        func_deployment_config[key] = {
+          dc_config_id: value.M.dc_config_id.S,
+          resource_id: value.M.resource_id.S,
+          endpoint: value.M.endpoint.S
+        };
+      } else if (value.S) {
+        func_deployment_config[key] = value.S;
+      }
+    });
+    
+    return {
+      wf_id: wf_id,
+      wf_refactored_id: wf_refactored_id,
+      wf_deployment_name: wf_deployment_name,
+      wf_deployment_id: wf_deployment_id,
+      wf_deployment_time: wf_deployment_time,
+      wf_dc_config: wf_dc_config,
+      func_deployment_config: func_deployment_config
+    };
+  });
+console.log(output);
+  return res.json(output)
   
 
 });
