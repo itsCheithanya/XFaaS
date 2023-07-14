@@ -15,6 +15,7 @@ import { useLocation } from "react-router-dom";
 
 const GraphWrapper = ({depdetails}) => {
   const depploymentdetails=depdetails;
+  console.log(depploymentdetails);
   const navigate = useNavigate();
   const location=useLocation();
   const [graphdet,setGraphdet]=useState({});
@@ -30,7 +31,7 @@ const GraphWrapper = ({depdetails}) => {
   .then(response => {
  
     const ref = response.data;
-   console.log(ref);
+   //console.log(ref);
     setGraphdet(ref);
     setGraph(ref.graphs)
   
@@ -126,6 +127,7 @@ function InvocationsPage() {
       console.error(err)
     )
   },[location])
+  console.log(depdetails)
 
   const [activeComponent, setActiveComponent] = useState('GraphWrapper');
   const navigate=useNavigate();

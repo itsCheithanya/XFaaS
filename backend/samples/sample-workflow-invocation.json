@@ -1,8 +1,8 @@
 {
- "workflow_deployment_id": "uuid", [partition key]
- "workflow_invocation_id": "uuid",  [sortkey]
+ "workflow_deployment_id": "uuid",
+ "workflow_invocation_id": "uuid",
  "client_request_time_ms": 1669527328928, 
- "invocation_start_time_ms": 1669527329557#RandomNum3Digits, [sortkey] - local secondary index 
+ "invocation_start_time_ms": 1669527329557
  "functions": {
   "1": {
    "start_delta_ms": 0,

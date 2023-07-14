@@ -31,6 +31,7 @@ const rows = [
 
 export default function GraphTable({depdetails}) {
   const deploymentdet=depdetails
+  console.log(deploymentdet);
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
