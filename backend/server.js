@@ -6,10 +6,10 @@ const records = require("./database")
 const deployments=require("./deployments/workflow1/deployment.js")
 const refractored=require("./deployments/workflow1/deployment")
 const app = express();
-const port = 5000;
+const port = 8000;
 
 
-
+  
 //aws connectivity
 var AWS = require('aws-sdk');
 const { log } = require('console');
@@ -26,6 +26,7 @@ dynamodb.listTables({}, (err, data) => {
   if (err) {
     console.error('Error listing tables:', err);
     console.error('Error message:', err.message);
+    
   } else {
     const tableCount = data.TableNames.length;
     console.log('Number of tables:', tableCount);
@@ -57,6 +58,7 @@ dynamodb.listTables({}, (err, data) => {
           }
           if(tableName=="workflow_invocation_table"){
             INVOCATION_VARIABLE=scanData.Items
+         
           
           }
          
@@ -92,6 +94,31 @@ app.get("/api/allWorkflows",(req,res)=>{
    res.json(workflowInfo);
 })
 
+// app.post("/api/workflowId",(req,res)=>{
+
+//   const wfIdToFetch = req.body.wfid; 
+
+//   const input = SHARED_VARIABLE.find(
+//     (item) => item.wf_id.S == wfIdToFetch
+//   );
+//   var output = {
+//     "wfid": input.wf_id.S,
+//     "wfname": input.WorkflowName.S,
+//     "graphs": {
+//       "nodes": input.Nodes.L.map((node, index) => ({ "id": parseInt(node.M.NodeId.S), "label": node.M.NodeName.S })),
+//       "edges": input.Edges.L.map(edge => {
+//         var fromNode = Object.keys(edge.M)[0];
+//         var toNodes = edge.M[fromNode].L.map(ele => ele.S);
+//         return toNodes.map(toNode => ({
+//           "from": parseInt(input.Nodes.L.find(node => node.M.NodeName.S === fromNode).M.NodeId.S),
+//           "to": parseInt(input.Nodes.L.find(node => node.M.NodeName.S === toNode).M.NodeId.S)
+//         }));
+//       }).flat()
+//     }
+//   };
+//   res.json(JSON.stringify(output))
+// })
+
 app.post("/api/workflowId",(req,res)=>{
 
   const wfIdToFetch = req.body.wfid; 
@@ -99,6 +126,17 @@ app.post("/api/workflowId",(req,res)=>{
   const input = SHARED_VARIABLE.find(
     (item) => item.wf_id.S == wfIdToFetch
   );
+  //console.log(input);
+
+  // fs.writeFile("eg.txt", JSON.stringify(input), { flag: 'a' }, (err) => {
+  //   if (err) {
+  //     console.error('Error writing to the file:', err);
+  //   } else {
+  //     console.log('Data has been written to the file.');
+  //   }
+  // });
+
+
   var output = {
     "wfid": input.wf_id.S,
     "wfname": input.WorkflowName.S,
@@ -112,14 +150,44 @@ app.post("/api/workflowId",(req,res)=>{
           "to": parseInt(input.Nodes.L.find(node => node.M.NodeName.S === toNode).M.NodeId.S)
         }));
       }).flat()
-    }
+    },
+    "mermaidGraphDefinition":""
   };
+  //console.log(output);
+  // fs.writeFile("op.txt", JSON.stringify(output), { flag: 'a' }, (err) => {
+  //   if (err) {
+  //     console.error('Error writing to the file:', err);
+  //   } else {
+  //     console.log('Data has been written to the file.');
+  //   }
+  // });
+
+  const graphData = output
+  const { nodes, edges } = graphData.graphs;
+
+  // Start with the graph definition
+  let mermaidString = 'graph LR;\n';
+
+  // Convert nodes to Mermaid nodes
+  for (const node of nodes) {
+    mermaidString += `  ${node.id}["<a href="/wf/CodeViewer">${node.label}</a>"];\n`;
+  }
+
+  // Convert edges to Mermaid edges
+  for (const edge of edges) {
+    mermaidString += `  ${edge.from} --> ${edge.to};\n`;
+  }
+
+  console.log(mermaidString);
+  output.mermaidGraphDefinition=mermaidString
+
   res.json(JSON.stringify(output))
 })
 
-app.post("/api/workflowId/deployments", (req, res) => {
-  const clickedId = req.body.wfid;
 
+app.post("/api/workflowId/deployments", (req, res) => {  
+  const clickedId = req.body.wfid;
+ // return res.json({"msg":clickedId});
   const input = DEPLOYMENT_VARIABLE.filter(item => item.wf_id.S === clickedId);
 
 
@@ -163,16 +231,20 @@ app.post("/api/workflowId/deployments", (req, res) => {
   });
 //console.log(output);
   return res.json(output)
+
+  //return res.json({"HELLO":"WORLD"})
   
 
 });
 
 
 app.post("/api/workflowId/deployments/deploymentId/", (req, res) => {
-  const clickedId = req.body.wf_deployment_id;
-  var refactored=DEPLOYMENT_VARIABLE.find((item)=>item.wf_deployment_id==clickedId);
-  const input=REFACTORED_VARIABLE.find((item)=> item.wf_refactored_id.S=="66f2476a-be44-4ca1-92a0-a0671e118652")//refactored.wf_refactored_id.S)
-   //console.log(input);
+  var clickedId = req.body.wf_deployment_id;
+  var deployment=DEPLOYMENT_VARIABLE.find((item)=>item.wf_deployment_id.S==clickedId);
+  console.log(deployment)
+ var input=REFACTORED_VARIABLE.find((item)=> item.wf_refactored_id.S==deployment.wf_refacored_id.S)//"66f2476a-be44-4ca1-92a0-a0671e118652")
+  // return res.json({"allworkflows":SHARED_VARIABLE,"deployment table":DEPLOYMENT_VARIABLE,"refactored table":REFACTORED_VARIABLE});
+
 //console.log(REFACTORED_VARIABLE)
   const output = {
     //"Wf_id": input.wf_id.S ? input.wf_id.S:"",
@@ -191,27 +263,7 @@ app.post("/api/workflowId/deployments/deploymentId/", (req, res) => {
         "func_ids": input.wf_partitions.L[0].M.function_ids.L.map(func => func.S)
       }
     ] :"",
-    // "Nodes": input.Nodes.L.map(node => {
-    //   const nodeData = node.M;
-    //   const nodeId = nodeData.NodeId.S;
-    //   const nodeName = nodeData.NodeName.S;
-    //   const path = nodeData.Path.S;
-    //   const entryPoint = nodeData.EntryPoint.S;
-    //   const memoryInMB = parseInt(nodeData.MemoryInMB.N);
-    //   const isFused = nodeData.hasOwnProperty("IsFused") ? nodeData.IsFused.S : "";
-    //   const isAutoGenerated = nodeData.hasOwnProperty("IsAutoGenerated") ? nodeData.IsAutoGenerated.S : "";
-
-    //   return {
-    //     "NodeId": nodeId,
-    //     "ModuleName": "String",
-    //     "NodeName": nodeName,
-    //     "Path": path,
-    //     "EntryPoint": entryPoint,
-    //     "MemoryInMB": memoryInMB,
-    //     "IsFused": isFused,
-    //     "IsAutoGenerated": isAutoGenerated
-    //   };
-    // }),
+   
     "graphs": {
       "nodes": input.Nodes.L.map(node => {
         const nodeData = node.M;
@@ -227,7 +279,7 @@ app.post("/api/workflowId/deployments/deploymentId/", (req, res) => {
         } else if (csp === "GCP") {
           color = "#00CC00";
         } else {
-          color = "#000000"; // Default color if CSP is not defined
+          color = "#FF9900"; // Default color if CSP is not defined
         }
 
         return {
@@ -244,36 +296,22 @@ app.post("/api/workflowId/deployments/deploymentId/", (req, res) => {
           "to": parseInt(input.Nodes.L.find(node => node.M.NodeName.S === toNode).M.NodeId.S)
         }));
       }).flat()
-      // "edges": input.Edges.L.map(edge => {
-      //   const srcNodeId = Object.keys(edge.M)[0];
-      //   const sinkNodeId = edge.M[srcNodeId].L[0].S;
-
-      //   return {
-      //     "from": srcNodeId,
-      //     "to": sinkNodeId,
-      //   };
-      // })
     },
-    // "Edges": input.Edges.L.map(edge => {
-    //   const srcNodeId = Object.keys(edge.M)[0];
-    //   const sinkNodeId = edge.M[srcNodeId][0].S;
-
-    //   return {
-    //     "src_node_id": srcNodeId,
-    //     "sink_node_id": sinkNodeId,
-    //     "is_auto_generated": "boolean"
-    //   };
-    // })
+        
   };
 
- console.log(output)
-  return res.json(output);
+
+//console.log(input)
+ return res.json(output);
 });
+
+
+
 //to get refractored wf details from depid/refid
 app.post("/api/workflowId/refactoredID/",(req,res)=>{
-  const clickedId = req.body.wf_deployment_id;
-  var refactored=DEPLOYMENT_VARIABLE.find((item)=>item.wf_deployment_id==clickedId);
-  const input=REFACTORED_VARIABLE.find((item)=> item.wf_refactored_id.S=="66f2476a-be44-4ca1-92a0-a0671e118652")//refactored.wf_refactored_id.S)
+  var clickedId = req.body.wf_deployment_id;
+  var dep=DEPLOYMENT_VARIABLE.find((item)=>item.wf_deployment_id.S==clickedId);
+  var input=REFACTORED_VARIABLE.find((item)=> item.wf_refactored_id.S==dep.wf_refacored_id.S)
    //console.log(input);
 //console.log(REFACTORED_VARIABLE)
   const output = {
@@ -292,28 +330,7 @@ app.post("/api/workflowId/refactoredID/",(req,res)=>{
         "partition_label": input.wf_partitions.L[0].M.partition_label.S,
         "func_ids": input.wf_partitions.L[0].M.function_ids.L.map(func => func.S)
       }
-    ] :"",
-    // "Nodes": input.Nodes.L.map(node => {
-    //   const nodeData = node.M;
-    //   const nodeId = nodeData.NodeId.S;
-    //   const nodeName = nodeData.NodeName.S;
-    //   const path = nodeData.Path.S;
-    //   const entryPoint = nodeData.EntryPoint.S;
-    //   const memoryInMB = parseInt(nodeData.MemoryInMB.N);
-    //   const isFused = nodeData.hasOwnProperty("IsFused") ? nodeData.IsFused.S : "";
-    //   const isAutoGenerated = nodeData.hasOwnProperty("IsAutoGenerated") ? nodeData.IsAutoGenerated.S : "";
-
-    //   return {
-    //     "NodeId": nodeId,
-    //     "ModuleName": "String",
-    //     "NodeName": nodeName,
-    //     "Path": path,
-    //     "EntryPoint": entryPoint,
-    //     "MemoryInMB": memoryInMB,
-    //     "IsFused": isFused,
-    //     "IsAutoGenerated": isAutoGenerated
-    //   };
-    // }),
+    ] :"", 
     "graphs": {
       "nodes": input.Nodes.L.map(node => {
         const nodeData = node.M;
@@ -323,13 +340,13 @@ app.post("/api/workflowId/refactoredID/",(req,res)=>{
         let color = "";
 
         if (csp === "Azure") {
-          color = "#0080FF";
+          color = "dodgerblue";  //#0080FF
         } else if (csp === "AWS") {
-          color = "#FF9900";
+          color = "orange"; //#FF9900
         } else if (csp === "GCP") {
-          color = "#00CC00";
+          color = "springgreen";  //#00CC00
         } else {
-          color = "#000000"; // Default color if CSP is not defined
+          color = "orange"; // #FF9900 Default color if CSP is not defined
         }
 
         return {
@@ -345,63 +362,67 @@ app.post("/api/workflowId/refactoredID/",(req,res)=>{
           "from": parseInt(input.Nodes.L.find(node => node.M.NodeName.S === fromNode).M.NodeId.S),
           "to": parseInt(input.Nodes.L.find(node => node.M.NodeName.S === toNode).M.NodeId.S)
         }));
-      }).flat()
-      // "edges": input.Edges.L.map(edge => {
-      //   const srcNodeId = Object.keys(edge.M)[0];
-      //   const sinkNodeId = edge.M[srcNodeId].L[0].S;
-
-      //   return {
-      //     "from": srcNodeId,
-      //     "to": sinkNodeId,
-      //   };
-      // })
+      }).flat(),
+      "mermaidGraphDefinition": ""
     },
-    // "Edges": input.Edges.L.map(edge => {
-    //   const srcNodeId = Object.keys(edge.M)[0];
-    //   const sinkNodeId = edge.M[srcNodeId][0].S;
 
-    //   return {
-    //     "src_node_id": srcNodeId,
-    //     "sink_node_id": sinkNodeId,
-    //     "is_auto_generated": "boolean"
-    //   };
-    // })
   };
-//console.log(clickedId)
-//  const ref = refractored.refractored;
-//  const result = ref.find((obj) => obj["Refactored Workflow Id"] === clickedId);
- // console.log(result);
+
+  const graphData = output
+  const { nodes, edges } = graphData.graphs;
+
+  // Start with the graph definition
+  let mermaidString = 'graph LR;\n';
+
+  //Convert nodes to Mermaid nodes
+  for (const node of nodes) {
+    mermaidString += `  ${node.id}["<a href="/wf/CodeViewer" style='color:${node.color}';>${node.label}</a>"];\n`;
+  }  
+
+  // Convert edges to Mermaid edges
+  for (const edge of edges) {
+    mermaidString += `  ${edge.from} --> ${edge.to};\n`;
+  }
+
+  console.log(mermaidString);
+  output.graphs.mermaidGraphDefinition=mermaidString
   return res.json(output);
 })
 
-app.post("/api/deploymentId/invocation",(req,res)=>{
-  const clickedId = req.body.wf_deployment_id;
-  var input=INVOCATION_VARIABLE.find((item)=>item.workflow_deployment_id.S==clickedId);
-  const output = {
-    "workflow_deployment_id": input.workflow_deployment_id.S,
-    "workflow_invocation_id": input.workflow_invocation_id.S,
-    "client_request_time_ms": parseInt(input.client_request_time_ms.S),
-    "invocation_start_time_ms": parseInt(input.invocation_start_time_ms.S),
-    "functions": {}
-  };
+app.post("/api/deploymentId/invocations",(req,res)=>{
+  const clickedId =req.body.wf_deployment_id;//"5fa74fb4-bb52-4ce7-932a-d0d30936b3d3"
 
+  var input=INVOCATION_VARIABLE.filter((item)=>item.workflow_deployment_id.S==clickedId);
+  return res.json({"workflow_deployment_id":clickedId,"no_of_invocations":input.length});
+ 
+})
+
+
+app.post("/api/deploymentId/listAllInvocations/",async(req,res)=>{
+  const clickedId =req.body.wf_deployment_id;
+ var inputArray=INVOCATION_VARIABLE.filter((item)=>item.workflow_deployment_id.S==clickedId);
+ const output = await inputArray.map((input) => {
   const functionKeys = Object.keys(input.functions.M);
-  functionKeys.forEach(key => {
+  const functions = {};
+
+  for (const key of functionKeys) {
     const func = input.functions.M[key].M;
-    output.functions[key] = {
-      "start_delta_ms": parseInt(func.start_delta.N),
-      "end_delta_ms": parseInt(func.end_delta.N)
+    functions[key] = {
+      start_delta_ms: parseInt(func.start_delta.N),
+      end_delta_ms: parseInt(func.end_delta.N),
     };
-  });
+  }
+
+  return {
+    workflow_deployment_id: input.workflow_deployment_id.S,
+    workflow_invocation_id: input.workflow_invocation_id.S,
+    client_request_time_ms: parseInt(input.client_request_time_ms.S),
+    invocation_start_time_ms: parseInt(input.invocation_start_time_ms.S),
+    functions,
+  };
+});
   return res.json(output);
 })
-
-// app.get("/api/dep",(req,res)=>{
-//   return res.json(DEPLOYMENT_VARIABLE);
-// })
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
 });
-
-
-

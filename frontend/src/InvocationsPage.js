@@ -9,8 +9,7 @@ import Button from '@mui/material/Button';
 import GraphTable from './components/GraphTable';
 import axios from "axios";
 import { useLocation } from "react-router-dom";
-
-
+import MermaidDiagram from './components/MermaidDiagram.jsx';
 
 
 const GraphWrapper = ({depdetails}) => {
@@ -21,28 +20,31 @@ const GraphWrapper = ({depdetails}) => {
   const [graphdet,setGraphdet]=useState({});
   const [graph,setGraph]=useState({
     nodes:[],
-    edges:[]
+    edges:[],
+    mermaidGraphDefinition: ""
   });
+  
 
   useEffect(() => {
     const params = new URLSearchParams(location.search);
     const wf_deployment_id= params.get("wf_deployment_id");
-  axios.post("/api/workflowId/refactoredID", { "wf_deployment_id": wf_deployment_id })
-  .then(response => {
+    axios.post("/api/workflowId/refactoredID", { "wf_deployment_id": wf_deployment_id })
+    .then(response => {
  
     const ref = response.data;
-   //console.log(ref);
+    //console.log("logging ref");
+    //console.log(ref);
     setGraphdet(ref);
     setGraph(ref.graphs)
+    console.log("all logging");
+    console.log(ref);
   
   })
   .catch(error => {
     console.error(error);
   });
   }, [location]);
-console.log(graph);
-
-  
+ console.log(graph);  
 
   const HandleNodeClick = (event) => {
     const nodeId = event.nodes[0];
@@ -84,25 +86,22 @@ console.log(graph);
         "size": 18,
         "face": "ariel",
         
-      },
-  
-  
-    },
-  
-    
-    
+      },  
+    },    
   };
 
-
-
- 
-
   return (
-    <div className="graphcontainer">
-      <div className="graphbox">
-        <Graph graph={graph} options={options} events={{ click: HandleNodeClick }} style={{ height: "640px" }} />
+    // <div className="graphcontainer">
+    //   <div className="graphbox">
+    //     <Graph graph={graph} options={options} events={{ click: HandleNodeClick }} style={{ height: "640px" }} />
+    //   </div>      
+    // </div>
+
+    <div className="MermaidGraphh">
+      <h1></h1>
+        <MermaidDiagram definition={graph.mermaidGraphDefinition} />
       </div>
-    </div>
+    
   );
 };
 
@@ -120,7 +119,7 @@ function InvocationsPage() {
     const depid=params.get("wf_deployment_id");
     axios.post("/api/workflowId/deployments/deploymentId/",{"wf_deployment_id":depid}).then(res=>{
       const depObj=res.data
-      console.log(depObj);
+      console.log("res");
       setDepdetails(depObj);
 
     }).catch(err=>
