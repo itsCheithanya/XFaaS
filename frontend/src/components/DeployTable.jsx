@@ -30,19 +30,18 @@ export default function DeployTable({alldep}) {
   const [rows,setRows]=useState([])
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
-  const deparray=alldep;
 
 
 // console.log(deparray)
 const temprows=[]
 useEffect(() => {
   
-  deparray.forEach((dep)=>{
+  alldep.forEach((dep)=>{
    temprows.push(createData(dep.wf_deployment_id, dep.wf_deployment_time, dep.wf_deployment_name)); 
   })
 
   setRows(temprows);
-},);
+},[alldep]);
 
 console.log(rows);
 

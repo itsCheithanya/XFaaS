@@ -120,7 +120,7 @@ function InvocationsPage() {
     const depid=params.get("wf_deployment_id");
     axios.post("/api/workflowId/deployments/deploymentId/",{"wf_deployment_id":depid}).then(res=>{
       const depObj=res.data
-      console.log(depObj);
+      console.log("res");
       setDepdetails(depObj);
 
     }).catch(err=>
