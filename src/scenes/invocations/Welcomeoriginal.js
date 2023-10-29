@@ -4,12 +4,12 @@ import { createTheme, ThemeProvider, styled } from '@mui/material/styles';
 const BoxContainer = styled('div')(({ theme }) => ({
   width: '70%',
   padding: theme.spacing(2),
-  backgroundColor: theme.palette.background.default,
+  backgroundColor:theme.palette.background.default,
   opacity: 0,
   transition: 'opacity 1s ease',
 }));
 
-const Welcome = () => {
+const Welcomeuser = () => {
     const [showText, setShowText] = useState(false);
   
     useEffect(() => {
@@ -28,15 +28,15 @@ const Welcome = () => {
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center',
-            height: '50vh',
-            marginLeft: '29%',
+            height: '20vh',
+            marginLeft: '32%',
             marginRight: '25%',
           }}
         >
           <div style={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
             <BoxContainer style={{ opacity: showText ? 1 : 0 }}>
               {showText && (
-                <h1 style={{ fontSize: '40px', color: 'blue' }}>Manage your workflows</h1>
+                <h1 style={{ fontSize: '40px', color: 'blue' }}>Original Workflow</h1>
               )}
             </BoxContainer>
           </div>
@@ -46,4 +46,4 @@ const Welcome = () => {
   };
   
 
-export default Welcome;
+export default Welcomeuser;

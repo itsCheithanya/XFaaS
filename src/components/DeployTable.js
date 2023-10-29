@@ -72,7 +72,7 @@ export default function DeployTable() {
                     return (
                       <TableRow hover role="checkbox" tabIndex={-1} key={row.name}>
                         <TableCell key={columns[0].id} align={columns[0].align}>
-                        <Link to="/wf/InvocationsPage">{row[columns[0].id]}</Link>
+                        <Link to="/wf/Invocations">{row[columns[0].id]}</Link>
                         </TableCell>
                         <TableCell key={columns[1].id} align={columns[1].align}>
                           {row[columns[1].id]}

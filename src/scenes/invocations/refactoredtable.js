@@ -10,24 +10,25 @@ import TableRow from '@mui/material/TableRow';
 import { Link } from 'react-router-dom';
 
 const columns = [
-  { id: 'Name', label: 'Name', align: 'center', minWidth: 170 },
-  { id: 'ID', label: 'Func ID', align: 'center', minWidth: 100 },
-  { id: 'CSP', label: 'CSP', align: 'center', minWidth: 100 },
+  { id: 'Refactored_function', label: 'Refactored function', align: 'center', minWidth: 170 },
+  { id: 'Original_Functions', label: 'Original Functions', align: 'center', minWidth: 100 },
 ];
 
-function createData(Name, ID, CSP) {
-  return { Name, ID, CSP };
-}
+const wfFusionConfig = [
+    {
+      fused_func_id: "3ycp",
+      original_func_ids: ["zxd0", "rysh", "37u3"],
+    },
+  ];
 
-const rows = [
-  createData("Resize", "fm9m",  "Azure"),
-  createData("MoblieNet", "b74b", "Azure"),
-  createData("ResNet", "3ycp",  "Azure"),
-  createData("SqueezeNet","bq21",  "Azure"),
-  createData("Union","tyvq", "Azure"),
-];
+  function createData(Refactored_function, Original_Functions) {
+    return { Refactored_function, Original_Functions };
+  }
+  
+  const rows = wfFusionConfig.map(item => createData(item.fused_func_id, item.original_func_ids.join(', ')));
+  
 
-export default function GraphTable() {
+export default function RefactoredTable() {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
@@ -41,7 +42,7 @@ export default function GraphTable() {
   };
 
   return (
-      <Paper sx={{width: '70%', overflow: 'hidden',margin: '0 auto', border: '2px solid blue', marginBottom: '20px', paddingBottom: '20px' }}>
+      <Paper sx={{width: '55%', overflow: 'hidden',margin: '0 auto', border: '2px solid blue', marginBottom: '20px', paddingBottom: '20px' }}>
         <TableContainer sx={{ maxHeight: 440 }}>
             <Table stickyHeader aria-label="sticky table">
               <TableHead>
@@ -69,9 +70,6 @@ export default function GraphTable() {
                         <TableCell key={columns[1].id} align={columns[1].align}>
                           {row[columns[1].id]}
                         </TableCell>
-                        <TableCell key={columns[2].id} align={columns[2].align}>
-                          {row[columns[2].id]}
-                        </TableCell>
                       </TableRow>
                     );
                   })}
@@ -92,5 +90,3 @@ export default function GraphTable() {
     
   );
 }
-
-

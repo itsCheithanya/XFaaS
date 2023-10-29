@@ -1,6 +1,7 @@
 import { ResponsiveLine } from '@nivo/line'
 import { useTheme } from "@emotion/react";
 import { tokens } from "../theme";
+import React, { useState } from 'react';
 
 
 var testData=[
@@ -79,20 +80,50 @@ var testData=[
 ]
 
 
-const LineChart = ({invocationId}) => {
+const LineChart = ({ invocationId }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-  var invocationData = testData.find((data) => data.id === invocationId);
-  console.log(invocationData);
+  const [startDate, setStartDate] = useState(null);
+  const [endDate, setEndDate] = useState(null);
+
+  const handleDateRangeChange = (start, end) => {
+    setStartDate(start);
+    setEndDate(end);
+  };
+
+  const filteredData = testData.map((data) => {
+    const filteredDataPoints = data.data.filter((point) => {
+      if (startDate && endDate) {
+        // Check if the point's x value (day) is within the selected date range
+        return point.x >= startDate && point.x <= endDate;
+      }
+      return true; // Show all data points if no date range is selected
+    });
+
+    return {
+      ...data,
+      data: filteredDataPoints,
+    };
+  });
+
+  
+  const invocationData = filteredData.find((data) => data.id === invocationId);
 
   if (invocationId === null || !invocationData) {
     return null; // Render null only when the invocationId prop is null or not found in the testData
   }
 
-
-  
-    return (
-    <ResponsiveLine
+  return (
+    <div style={{ height: '500px' }}>
+      <div style={{ display: 'flex', marginBottom: '10%', marginLeft: '10%' }}>
+        <div>
+          Start Date: <input type="date" onChange={(e) => handleDateRangeChange(e.target.value, endDate)} />
+        </div>
+        <div style={{ marginLeft: '10%' }}>
+          End Date: <input type="date" onChange={(e) => handleDateRangeChange(startDate, e.target.value)} />
+        </div>
+      </div>
+      <ResponsiveLine
         data={[invocationData]}
         theme={{
           // added
@@ -185,6 +216,8 @@ const LineChart = ({invocationId}) => {
             }
         ]}
     />
+    </div>
     )
-    }
+  }
+    
 export default LineChart;

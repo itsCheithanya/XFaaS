@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-
 import './CodeViewer.css';
 import ResponsiveAppBar from './App-bar';
 
@@ -70,6 +69,9 @@ function CodeViewer(props) {
         >
           {text}
         </div>
+      </div>
+      <div className= "FooterBox" >
+        esggswg
       </div>
     </div>
   );

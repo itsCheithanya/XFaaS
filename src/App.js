@@ -19,7 +19,6 @@ function App() {
       </div>
          <AllwfTable /> 
       <div className="FooterBox">
-
       </div>
     </div>
   );

@@ -6,7 +6,8 @@ import Wf from './components/Wf';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import CodeViewer from './components/CodeViewer';
-import InvocationsPage from './InvocationsPage';
+import Invocations from './InvocationsPage';
+import InvocationDetails from './scenes/invocations/InvocationDetails';
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
@@ -17,7 +18,8 @@ root.render(
         <Route exact path="/" element={<App/>} />
         <Route path="/wf" element={<Wf/>}/>
         <Route path="/wf/CodeViewer" element={<CodeViewer/>} />
-        <Route path="/wf/InvocationsPage" element={<InvocationsPage/>} />
+        <Route path="/wf/Invocations" element={<Invocations/>} />
+        <Route path="/wf/Invocations/:id" element={<InvocationDetails/>} />
 
         
       </Routes>
