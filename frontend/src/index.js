@@ -9,6 +9,7 @@ import CodeViewer from './components/CodeViewer';
 import InvocationsPage from './InvocationsPage';
 import Invocation from './scenes/invocations/Invocation';
 import Login from './scenes/login/Login';
+import InvocationDetails from './scenes/invocations/InvocationDetails';
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
@@ -22,6 +23,7 @@ root.render(
         <Route path="/wf/CodeViewer" element={<CodeViewer/>} />
         <Route path="/wf/deployment" element={<InvocationsPage/>} />
         <Route path="/wf/deployment/invocations" element={<Invocation/>} />
+        <Route path="/wf/Invocations/:id" element={<InvocationDetails/>} />
 
         
       </Routes>

@@ -58,6 +58,7 @@ dynamodb.listTables({}, (err, data) => {
           }
           if(tableName=="workflow_invocation_table"){
             INVOCATION_VARIABLE=scanData.Items
+          
          
           
           }
@@ -303,7 +304,7 @@ app.post("/api/workflowId/refactoredID/",(req,res)=>{
 })
 
 app.post("/api/deploymentId/invocations",(req,res)=>{
-  const clickedId =req.body.wf_deployment_id;//"5fa74fb4-bb52-4ce7-932a-d0d30936b3d3"
+  const clickedId ="76154d98-a0d7-4fc7-8c3e-99c74d91e2ed"//req.body.wf_deployment_id;
 
   var input=INVOCATION_VARIABLE.filter((item)=>item.workflow_deployment_id.S==clickedId);
   return res.json({"workflow_deployment_id":clickedId,"no_of_invocations":input.length});
@@ -312,7 +313,7 @@ app.post("/api/deploymentId/invocations",(req,res)=>{
 
 
 app.post("/api/deploymentId/listAllInvocations/",async(req,res)=>{
-  const clickedId =req.body.wf_deployment_id;
+  const clickedId ="76154d98-a0d7-4fc7-8c3e-99c74d91e2ed";//req.body.wf_deployment_id;//"76154d98-a0d7-4fc7-8c3e-99c74d91e2ed"
  var inputArray=INVOCATION_VARIABLE.filter((item)=>item.workflow_deployment_id.S==clickedId);
  const output = await inputArray.map((input) => {
   const functionKeys = Object.keys(input.functions.M);

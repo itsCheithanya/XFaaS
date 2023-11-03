@@ -13,6 +13,7 @@ import { useLocation } from "react-router-dom";
 
 
 
+
 const GraphWrapper = ({depdetails}) => {
   const depploymentdetails=depdetails;
   console.log(depploymentdetails);
@@ -114,10 +115,11 @@ console.log(graph);
 function InvocationsPage() {
   const location=useLocation();
   const [depdetails,setDepdetails]=useState({})
-
+const [deploymentId,setDeploymentId]=useState("");
   useEffect(()=>{
     const params=new URLSearchParams(location.search);
     const depid=params.get("wf_deployment_id");
+    setDeploymentId(depid)
     axios.post("/api/workflowId/deployments/deploymentId/",{"wf_deployment_id":depid}).then(res=>{
       const depObj=res.data
       console.log("res");
@@ -140,7 +142,7 @@ function InvocationsPage() {
     setActiveComponent('GraphTable');
   };
   const handleInvoClick=()=>{
-          navigate("/wf/deployment/invocations");
+          navigate(`/wf/deployment/invocations/?wfid=${deploymentId}`);
   }
  
 const [theme]=useMode();
@@ -172,7 +174,7 @@ const [theme]=useMode();
             </Button>
         </div>
         {activeComponent === 'GraphWrapper' ? <GraphWrapper depdetails={depdetails}/> : <GraphTable depdetails={depdetails} />}
-
+        
         </div>
         
       </ThemeProvider>
