@@ -9,41 +9,84 @@ import Button from '@mui/material/Button';
 import GraphTable from './components/GraphTable';
 import axios from "axios";
 import { useLocation } from "react-router-dom";
+import mermaid from "mermaid";
 
 
+const MermaidDiagram = ({ definition }) => {
+  const [mermaidInitialized, setMermaidInitialized] = useState(false);
 
+  useEffect(() => {
+    // Initialize Mermaid when the component mounts
+    mermaid.initialize({ startOnLoad: true });
+    setMermaidInitialized(true);
+  }, []);
+
+  useEffect(() => {
+    const reloadCount = sessionStorage.getItem('reloadCount');
+    
+    if (mermaidInitialized && (!reloadCount || parseInt(reloadCount) === 0)) {
+      const timeout = setTimeout(() => {
+        sessionStorage.setItem('reloadCount', '1'); // Set the flag to prevent further reloads
+        window.location.reload();
+      }, 100);
+
+      return () => {
+        clearTimeout(timeout);
+      };
+    }
+  }, [mermaidInitialized]);
+
+  return (
+    <div>
+      {mermaidInitialized ? (
+        <div id="mermaid-diagram" className="mermaid">
+          {definition}
+        </div>
+      ) : (
+        <p>Loading Mermaid diagram...</p>
+      )}
+    </div>
+  );
+};
 
 
 const GraphWrapper = ({depdetails}) => {
   const depploymentdetails=depdetails;
-  console.log(depploymentdetails);
+  //console.log(depploymentdetails);
   const navigate = useNavigate();
   const location=useLocation();
   const [graphdet,setGraphdet]=useState({});
   const [graph,setGraph]=useState({
     nodes:[],
-    edges:[]
+    edges:[],
+    mermaidGraphDefinition: ""
   });
+  
 
   useEffect(() => {
     const params = new URLSearchParams(location.search);
     const wf_deployment_id= params.get("wf_deployment_id");
-  axios.post("/api/workflowId/refactoredID", { "wf_deployment_id": wf_deployment_id })
-  .then(response => {
+    axios.post("/api/workflowId/refactoredID", { "wf_deployment_id": wf_deployment_id })
+    .then(response => {
  
     const ref = response.data;
-   //console.log(ref);
+    //console.log("logging ref");
+    //console.log(ref);
+    sessionStorage.removeItem('reloadCount');
     setGraphdet(ref);
+
     setGraph(ref.graphs)
+    console.log("all logging");
+    console.log(ref);
   
   })
   .catch(error => {
     console.error(error);
   });
   }, [location]);
-console.log(graph);
+ console.log(graph);  
 
-  
+
 
   const HandleNodeClick = (event) => {
     const nodeId = event.nodes[0];
@@ -85,25 +128,22 @@ console.log(graph);
         "size": 18,
         "face": "ariel",
         
-      },
-  
-  
-    },
-  
-    
-    
+      },  
+    },    
   };
 
-
-
- 
-
   return (
-    <div className="graphcontainer">
-      <div className="graphbox">
-        <Graph graph={graph} options={options} events={{ click: HandleNodeClick }} style={{ height: "640px" }} />
+    // <div className="graphcontainer">
+    //   <div className="graphbox">
+    //     <Graph graph={graph} options={options} events={{ click: HandleNodeClick }} style={{ height: "640px" }} />
+    //   </div>      
+    // </div>
+
+    <div className="MermaidGraphh">
+      <h1></h1>
+        <MermaidDiagram definition={graph.mermaidGraphDefinition} />
       </div>
-    </div>
+    
   );
 };
 

@@ -102,6 +102,17 @@ app.post("/api/workflowId",(req,res)=>{
   const input = SHARED_VARIABLE.find(
     (item) => item.wf_id.S == wfIdToFetch
   );
+  //console.log(input);
+
+  // fs.writeFile("eg.txt", JSON.stringify(input), { flag: 'a' }, (err) => {
+  //   if (err) {
+  //     console.error('Error writing to the file:', err);
+  //   } else {
+  //     console.log('Data has been written to the file.');
+  //   }
+  // });
+
+
   var output = {
     "wfid": input.wf_id.S,
     "wfname": input.WorkflowName.S,
@@ -115,8 +126,37 @@ app.post("/api/workflowId",(req,res)=>{
           "to": parseInt(input.Nodes.L.find(node => node.M.NodeName.S === toNode).M.NodeId.S)
         }));
       }).flat()
-    }
+    },
+    "mermaidGraphDefinition":""
   };
+  //console.log(output);
+  // fs.writeFile("op.txt", JSON.stringify(output), { flag: 'a' }, (err) => {
+  //   if (err) {
+  //     console.error('Error writing to the file:', err);
+  //   } else {
+  //     console.log('Data has been written to the file.');
+  //   }
+  // });
+
+  const graphData = output
+  const { nodes, edges } = graphData.graphs;
+
+  // Start with the graph definition
+  let mermaidString = 'graph LR;\n';
+
+  // Convert nodes to Mermaid nodes
+  for (const node of nodes) {
+    mermaidString += `  ${node.id}["<a href="/wf/CodeViewer">${node.label}</a>"];\n`;
+  }
+
+  // Convert edges to Mermaid edges
+  for (const edge of edges) {
+    mermaidString += `  ${edge.from} --> ${edge.to};\n`;
+  }
+
+  console.log(mermaidString);
+  output.mermaidGraphDefinition=mermaidString
+
   res.json(JSON.stringify(output))
 })
 
@@ -240,6 +280,8 @@ app.post("/api/workflowId/deployments/deploymentId/", (req, res) => {
 //console.log(input)
  return res.json(output);
 });
+
+
 //to get refractored wf details from depid/refid
 app.post("/api/workflowId/refactoredID/",(req,res)=>{
   var clickedId = req.body.wf_deployment_id;
@@ -273,13 +315,13 @@ app.post("/api/workflowId/refactoredID/",(req,res)=>{
         let color = "";
 
         if (csp === "Azure") {
-          color = "#0080FF";
+          color = "dodgerblue";  //#0080FF
         } else if (csp === "AWS") {
-          color = "#FF9900";
+          color = "orange"; //#FF9900
         } else if (csp === "GCP") {
-          color = "#00CC00";
+          color = "springgreen";  //#00CC00
         } else {
-          color = "#FF9900"; // Default color if CSP is not defined
+          color = "orange"; // #FF9900 Default color if CSP is not defined
         }
 
         return {
@@ -295,13 +337,33 @@ app.post("/api/workflowId/refactoredID/",(req,res)=>{
           "from": parseInt(input.Nodes.L.find(node => node.M.NodeName.S === fromNode).M.NodeId.S),
           "to": parseInt(input.Nodes.L.find(node => node.M.NodeName.S === toNode).M.NodeId.S)
         }));
-      }).flat()
+      }).flat(),
+      "mermaidGraphDefinition": ""
     },
 
   };
 
+  const graphData = output
+  const { nodes, edges } = graphData.graphs;
+
+  // Start with the graph definition
+  let mermaidString = 'graph LR;\n';
+
+  //Convert nodes to Mermaid nodes
+  for (const node of nodes) {
+    mermaidString += `  ${node.id}["<a href="/wf/CodeViewer" style='color:${node.color}';>${node.label}</a>"];\n`;
+  }  
+
+  // Convert edges to Mermaid edges
+  for (const edge of edges) {
+    mermaidString += `  ${edge.from} --> ${edge.to};\n`;
+  }
+
+  console.log(mermaidString);
+  output.graphs.mermaidGraphDefinition=mermaidString
   return res.json(output);
 })
+
 
 app.post("/api/deploymentId/invocations",(req,res)=>{
   const clickedId ="76154d98-a0d7-4fc7-8c3e-99c74d91e2ed"//req.body.wf_deployment_id;
