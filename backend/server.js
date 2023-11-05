@@ -303,7 +303,7 @@ app.post("/api/workflowId/refactoredID/",(req,res)=>{
   return res.json(output);
 })
 
-app.post("/api/deploymentId/invocations",(req,res)=>{
+app.get("/api/deploymentId/invocations",(req,res)=>{
   const clickedId ="76154d98-a0d7-4fc7-8c3e-99c74d91e2ed"//req.body.wf_deployment_id;
 
   var input=INVOCATION_VARIABLE.filter((item)=>item.workflow_deployment_id.S==clickedId);
@@ -311,6 +311,55 @@ app.post("/api/deploymentId/invocations",(req,res)=>{
  
 })
 
+app.get("/api/deploymentId/invocations/workflowEndTime/",async(req,res)=>{
+  const clickedId ="76154d98-a0d7-4fc7-8c3e-99c74d91e2ed"//req.body.wf_deployment_id;
+  var inputArray=INVOCATION_VARIABLE.filter((item)=>item.workflow_deployment_id.S==clickedId);
+  const temp = await inputArray.map((input) => {
+   const functionKeys = Object.keys(input.functions.M);
+   const functions = {};
+ 
+   for (const key of functionKeys) {
+     const func = input.functions.M[key].M;
+     functions[key] = {
+       start_delta_ms: parseInt(func.start_delta.N),
+       end_delta_ms: parseInt(func.end_delta.N),
+     };
+   }
+ 
+   return {
+     workflow_deployment_id: input.workflow_deployment_id.S,
+     workflow_invocation_id: input.workflow_invocation_id.S,
+     client_request_time_ms: parseInt(input.client_request_time_ms.S),
+     invocation_start_time_ms: parseInt(input.invocation_start_time_ms.S),
+     functions,
+   };
+ });
+var output=[]
+  for (let i = temp.length - 1; i >= 0; i--) {
+    const obj = temp[i];
+    const functions = obj.functions;
+    // Check if the function ID exists in the functions object.
+    if (!functions["254"]) {
+      return null;
+    }
+    //console.log(functions)
+   // Get the previous function ID.
+const previousFunctionId = Object.keys(functions)[Object.keys(functions).indexOf("254") - 1];
+
+    // Get the previous function end time.
+
+const invocation_start_time_ms=obj["invocation_start_time_ms"];
+const workflowEndTime = functions[previousFunctionId].end_delta_ms+invocation_start_time_ms;
+
+    output.push({
+      workflowEndTime,
+      invocation_start_time_ms,
+    });
+  }
+
+  return res.json({"output":output});
+ 
+})
 
 app.post("/api/deploymentId/listAllInvocations/",async(req,res)=>{
   const clickedId ="76154d98-a0d7-4fc7-8c3e-99c74d91e2ed";//req.body.wf_deployment_id;//"76154d98-a0d7-4fc7-8c3e-99c74d91e2ed"
