@@ -1,7 +1,11 @@
+* {
+    margin: 0px;
+    box-sizing: border-box;
+    scroll-behavior: smooth;
+}
 
-.App-header {
- 
-  height: 20vh;
+.App-header { 
+  height: 40vh;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -9,11 +13,9 @@
   color: white;
 }
 
-/* 
-.App-link {
-  color: #61dafb;
-} */
-
+.App{
+  margin: auto;
+}
 
 .button-container {
   display: flex;
@@ -21,16 +23,4 @@
   gap: 2%;
   margin-top: 5%;
   margin-bottom: 2%
-}
-
-
-.FooterBox {
-  font-size: medium;
-  display: flex;
-  width: 100%;
-  height: 100px;
-  padding: 20px;
-  margin-top: 20px;
-  color:black; 
-  
 }

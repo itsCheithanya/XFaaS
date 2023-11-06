@@ -17,12 +17,11 @@ import { useAuthStatus } from '../hooks/useAuthStatus';
 
 
 
-const pages = ['Main', 'About Us', 'Contact'];
+const pages = ['Home', 'About Us', 'Contact'];
 const settings = ['Profile', 'Logout'];
 
 function ResponsiveAppBar() {
   const navigate = useNavigate();
-  // const dispatch=useDispatch();
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
   const [result,setResult]=useAuthStatus();
@@ -44,7 +43,6 @@ function ResponsiveAppBar() {
       isAuthorized: false,
       username: "",
     });
-    // dispatch(setLogout())
     navigate("/");
   };
   
@@ -53,12 +51,11 @@ function ResponsiveAppBar() {
     <AppBar position="static">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-          <AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
           <Typography
-            variant="h6"
+            variant="h3"
             noWrap
             component="a"
-            href="/workflows"
+            href="/"
             sx={{
               mr: 2,
               display: { xs: 'none', md: 'flex' },
@@ -68,9 +65,7 @@ function ResponsiveAppBar() {
               color: 'inherit',
               textDecoration: 'none',
             }}
-          >
-            XFAAS
-          </Typography>
+          >XFaaS</Typography>
 
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
             <IconButton
@@ -81,7 +76,7 @@ function ResponsiveAppBar() {
               onClick={handleOpenNavMenu}
               color="inherit"
             >
-              <MenuIcon />
+            <MenuIcon />
             </IconButton>
             <Menu
               id="menu-appbar"
