@@ -1,7 +1,7 @@
 /* Style the container for the Mermaid diagram */
 .mermaid-container {
     width: 100%; /* Set the width as desired */
-    height: 100%; /* Set the height as desired */
+    height: 5rem; /* Set the height as desired */
     margin: 0 auto; /* Center the diagram horizontally */
 }
 
@@ -16,4 +16,9 @@
 
 .mermaid-container .edgePath path {
   stroke: #333; /* Example: Change the edge path stroke color */
+}
+
+#mermaid-diagram{
+  width: 100%; /* Set the width as desired */
+    height: 20%; /* Set the height as desired */
 }

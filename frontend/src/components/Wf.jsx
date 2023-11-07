@@ -355,10 +355,8 @@
 // export default Wf;
 
 import './Wf.css';
-import  Graph  from 'react-graph-vis';
 import DeploymentTable from './DeployTable';
 import ResponsiveAppBar from './App-bar';
-import { useNavigate } from 'react-router-dom';
 import { useMode } from '../theme';
 import {ThemeProvider} from "@mui/material"
 import { useLocation } from 'react-router-dom';
@@ -366,6 +364,7 @@ import { useEffect, useState } from 'react';
 import axios, { all } from 'axios';
 //import MermaidDiagram from './MermaidDiagram.jsx';
 import mermaid from 'mermaid';
+import './MermaidDiagram.css'
 
 function createData(wf_deployment_id, wf_deployment_time, wf_deployment_name) {
   return { wf_deployment_id, wf_deployment_time, wf_deployment_name };
@@ -411,7 +410,7 @@ const MermaidDiagram = ({ definition }) => {
   }, [mermaidInitialized]);
 
   return (
-    <div>
+    <div className='mermaid-container'>
       {mermaidInitialized ? (
         <div id="mermaid-diagram" className="mermaid">
           {definition}
@@ -474,35 +473,34 @@ const Wf = () => {
 
   const [theme]=useMode();
   
-    return( 
-      <ThemeProvider theme={theme}>     
-        <div className="App">
-      <ResponsiveAppBar />
-      <body>
-      <div className ="box">
-        <h3>Workflow ID: </h3>        
-        <div className='box'>{wfdetails.wfid}</div>
-      </div>
-      <div className="box">
-        <h3>Workflow Name:  </h3>        
-        <div className='box'>{wfdetails.wfname}</div>
-      </div>
-      <div className="box">
-        <h3>Workflow Description:  </h3>
-        <div className='box'>{wfdetails.WorkflowDescription}</div>
-      </div>
-
+  return( 
+      <ThemeProvider theme={theme}>  
+        <ResponsiveAppBar />
+        <div className='wf'>
       
-      
-      <div className="MermaidGraphh">
-      <h1></h1>
-        <MermaidDiagram definition={wfdetails.mermaidGraphDefinition} />
-      </div>
+          <body>
+            <div className='metaDataDiv'>
+              <div>
+                <h3>Workflow ID: {wfdetails.wfid}</h3>
+              </div>
+              <div>
+                <h3>Workflow Name: {wfdetails.wfname}</h3>
+              </div>
+              <div>
+                <h3>Workflow Description: {wfdetails.WorkflowDescription}</h3>
+              </div>
+            </div>
 
-      <DeploymentTable alldep={alldep} />   
-    </body>  
-  </div>
-</ThemeProvider>
+            <div className="mermaidGraphh">  
+              <div className='mermaidGraphhHeading'>User Submitted Workflow</div>
+              <h2></h2>
+              <MermaidDiagram definition={wfdetails.mermaidGraphDefinition} />
+            </div>
+
+            <DeploymentTable alldep={alldep} />   
+          </body>  
+        </div>
+      </ThemeProvider>
   );
 };
 

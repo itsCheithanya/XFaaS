@@ -76,8 +76,8 @@ const GraphWrapper = ({depdetails}) => {
     setGraphdet(ref);
 
     setGraph(ref.graphs)
-    console.log("all logging");
-    console.log(ref);
+    // console.log("all logging");
+    // console.log(ref);
   
   })
   .catch(error => {

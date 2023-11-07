@@ -3,7 +3,7 @@ import ResponsiveAppBar from './components/App-bar';
 import "./App.css";
 import { useMode } from './theme';
 import {Box, ThemeProvider} from "@mui/material"
-import TypewriterEffect from './TypeWriterEffect';
+import TypewriterEffect from './components/TypeWriterEffect';
 
 function App() {
   const [theme]=useMode();
