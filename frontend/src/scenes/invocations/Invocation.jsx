@@ -4,6 +4,7 @@ import { useLocation } from "react-router-dom";
 import { Link } from 'react-router-dom';
 import axios from "axios";
 import Line from '../line/Line';
+import StartvsEndScatterPlot from '../line/Line2';
 
 const Invocation = () => {
   const [invocationList, setInvocationList] = useState([]);
@@ -25,6 +26,7 @@ axios.post("/api/deploymentId/listAllInvocations/",{"wf_deployment_id":depid}).t
 }).catch(err=>
   console.error(err))
 },[location])
+
 
 
   const getLastFunctionEndTime = (functions, invocationStartTime) => {
@@ -72,7 +74,14 @@ axios.post("/api/deploymentId/listAllInvocations/",{"wf_deployment_id":depid}).t
   return (
     <div>
       <Box display="flex" flexDirection="column" alignItems="center">
-        <Line/>
+     
+        <Box height="45vh" width="80vw" paddingTop="50px" paddingLeft="50px">
+        <Line/> 
+        </Box>
+        <Box height="45vh" width="80vw" paddingTop="50px" paddingLeft="50px">
+        <StartvsEndScatterPlot/>
+        </Box>
+       
         <Box p={2} paddingTop='10%'>
           <TextField
             label="Filter by ID"

@@ -303,7 +303,7 @@ app.post("/api/workflowId/refactoredID/",(req,res)=>{
   return res.json(output);
 })
 
-app.get("/api/deploymentId/invocations",(req,res)=>{
+app.post("/api/deploymentId/invocations",(req,res)=>{
   const clickedId ="76154d98-a0d7-4fc7-8c3e-99c74d91e2ed"//req.body.wf_deployment_id;
 
   var input=INVOCATION_VARIABLE.filter((item)=>item.workflow_deployment_id.S==clickedId);
@@ -311,7 +311,7 @@ app.get("/api/deploymentId/invocations",(req,res)=>{
  
 })
 
-app.get("/api/deploymentId/invocations/workflowEndTime/",async(req,res)=>{
+app.post("/api/deploymentId/invocations/workflowEndTime/",async(req,res)=>{
   const clickedId ="76154d98-a0d7-4fc7-8c3e-99c74d91e2ed"//req.body.wf_deployment_id;
   var inputArray=INVOCATION_VARIABLE.filter((item)=>item.workflow_deployment_id.S==clickedId);
   const temp = await inputArray.map((input) => {
@@ -357,7 +357,7 @@ const workflowEndTime = functions[previousFunctionId].end_delta_ms+invocation_st
     });
   }
 
-  return res.json({"output":output});
+  return res.json(output);
  
 })
 
