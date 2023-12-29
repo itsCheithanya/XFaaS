@@ -3,6 +3,10 @@ import { Box, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, 
 import { useParams } from 'react-router-dom';
 import { useLocation } from "react-router-dom";
 import axios from "axios";
+import Paper from '@mui/material/Paper';
+import {useMode} from '../../theme'
+import {ThemeProvider} from "@mui/material"
+import ResponsiveAppBar from '../../components/App-bar';
 
 
 const InvocationDetails = () => {
@@ -56,16 +60,32 @@ useEffect(() => {
     setFilterValue(event.target.value);
   };
 
+  const [theme]=useMode();
+
   // Filter and sort functions based on start time in ascending order
   const filteredInvocationList = Object.entries(invocationList)
     .filter(([key]) => key.startsWith(filterValue))
     .sort(([, a], [, b]) => b.end_delta_ms - a.end_delta_ms);
 
+  
+
   return (
+  <>
+    <ThemeProvider theme={theme}>
+    <div className='app'>
+    <ResponsiveAppBar/>  
     <div>
-     
       <Box display="flex" flexDirection="column" alignItems="center">
-        <Box p={2} paddingTop='10%'>
+
+
+        <Box p={2} padding='6px'
+            sx={{
+              overflow: 'hidden',
+              margin: '8rem auto',
+              marginBottom: '20px',
+              boxShadow: 'rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px',
+              borderRadius: '6px',
+            }}>
           <TextField
             label="Filter by ID"
             value={filterValue}
@@ -73,15 +93,21 @@ useEffect(() => {
             variant="outlined"
           />
         </Box>
-        <Box width="70%" p={5} border="2px solid blue" margin="0 auto" marginTop="2%" marginBottom='10%'>
+
+
+        <Paper sx={{ width: '80%', overflow: 'hidden', margin: '0 auto', marginBottom: '20px', paddingBottom: '20px', boxShadow: 'rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px', borderRadius: '10px' }}>
+        <div style={{ textAlign: 'center', backgroundColor: 'black', padding: '15px' }}>
+          
+        </div>
+        
           <TableContainer sx={{ bgcolor: 'background.paper' }}>
             <Table>
               <TableHead>
                 <TableRow>
-                  <TableCell align='center'><b>Function ID</b></TableCell>
-                  <TableCell align='center'><b>Start Time (UTC+5:30)</b></TableCell>
-                  <TableCell align='center'><b>End Time (UTC+5:30)</b></TableCell>
-                  <TableCell align='center'><b>Execution Time (ms)</b></TableCell>
+                  <TableCell align='center' style={{ fontSize: '1.5rem', color: 'white', backgroundColor: 'black' }}>Function ID</TableCell>
+                  <TableCell align='center' style={{ fontSize: '1.5rem', color: 'white', backgroundColor: 'black' }}>Start Time (UTC+5:30)</TableCell>
+                  <TableCell align='center' style={{ fontSize: '1.5rem', color: 'white', backgroundColor: 'black' }}>End Time (UTC+5:30)</TableCell>
+                  <TableCell align='center' style={{ fontSize: '1.5rem', color: 'white', backgroundColor: 'black' }}>Execution Time (ms)</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -89,19 +115,23 @@ useEffect(() => {
                   const executionTime = value.end_delta_ms - value.start_delta_ms;
                   return (
                     <TableRow key={key}>
-                      <TableCell align='center'>{key}</TableCell>
-                      <TableCell align='center'>{value.start_time_formatted}</TableCell>
-                      <TableCell align='center'>{value.end_time_formatted}</TableCell>
-                      <TableCell align='center'>{executionTime}</TableCell>
+                      <TableCell align='center' style={{ fontSize: '0.8rem' }}>{key}</TableCell>
+                      <TableCell align='center' style={{ fontSize: '0.8rem' }}>{value.start_time_formatted}</TableCell>
+                      <TableCell align='center' style={{ fontSize: '0.8rem' }}>{value.end_time_formatted}</TableCell>
+                      <TableCell align='center' style={{ fontSize: '0.8rem' }}>{executionTime}</TableCell>
                     </TableRow>
                   );
                 })}
               </TableBody>
             </Table>
           </TableContainer>
-        </Box>
+        </Paper>
       </Box>
+      
     </div>
+  </div>
+  </ThemeProvider>
+</>
   );
 };
 

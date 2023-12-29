@@ -70,7 +70,7 @@ const LineChart = ({ chartData }) => {
 
 const CustomButton = styled(Button)({
   background: "white",
-  color: "blue",
+  color: "black",
   "&:hover": {
     background: "white",
   },
@@ -100,7 +100,7 @@ const Line = () => {
   return (
     <Box m="10px">
       <CustomButton variant="contained" onClick={fetchData}>
-        Invocations
+        Add Invocation
       </CustomButton>
       <Box height="45vh" width="40vw">
         <LineChart chartData={chartData} />
