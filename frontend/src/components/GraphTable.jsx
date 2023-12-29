@@ -13,7 +13,7 @@ import { useLocation } from "react-router-dom";
 
 const columns = [
   { id: 'Label', label: 'Label', align: 'center', minWidth: 100 },
-  { id: 'ID', label: 'Func ID', align: 'center', minWidth: 170 },
+  { id: 'ID', label: 'Function ID', align: 'center', minWidth: 170 },
   { id: 'CSP', label: 'CSP', align: 'center', minWidth: 100 },
 ];
 
@@ -25,11 +25,12 @@ export default function GraphTable() {
   const [rows, setRows] = useState([]);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
-  const location=useLocation();
+  const [searchQuery, setSearchQuery] = useState(''); // Add searchQuery state
+  const location = useLocation();
 
   useEffect(() => {
     const params = new URLSearchParams(location.search);
-    const wf_deployment_id= params.get("wf_deployment_id");
+    const wf_deployment_id = params.get("wf_deployment_id");
     axios.post("/api/workflowId/refactoredID", { "wf_deployment_id": wf_deployment_id })
       .then(response => {
         const nodes = response.data.graphs.nodes;
@@ -52,8 +53,37 @@ export default function GraphTable() {
     setPage(0);
   };
 
+  // Create a function that filters rows based on the search query
+  const filteredRows = rows.filter((row) => {
+    const lowerCaseSearchQuery = searchQuery.toLowerCase();
+    return (
+      row.Label.toString().toLowerCase().includes(lowerCaseSearchQuery) ||
+      row.ID.toString().toLowerCase().includes(lowerCaseSearchQuery) ||
+      row.CSP.toLowerCase().includes(lowerCaseSearchQuery)
+    );
+  });
+
   return (
-    <Paper sx={{ width: '70%', overflow: 'hidden', margin: '0 auto', border: '2px solid blue', marginBottom: '20px', paddingBottom: '20px' }}>
+    <Paper sx={{ width: '70%', overflow: 'hidden', margin: '0 auto', marginBottom: '20px', paddingBottom: '20px', boxShadow: 'rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px', borderRadius: '10px' }}>
+      <div style={{ textAlign: 'center', backgroundColor: 'black', padding: '15px' }}>
+        <input
+          type="text"
+          placeholder="Search by Label, Function ID, or CSP"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          style={{
+            fontSize: '1rem',
+            padding: '8px',
+            width: '300px',
+            height: '40px',
+            background: 'black',
+            color: 'white',
+            border: 'none',
+            boxShadow: 'inset 0 0 5px rgba(0, 0, 0, 0.5), 0 0 5px rgba(255, 255, 255, 0.5)',
+            borderRadius: '10px'
+          }}
+        />
+      </div>
       <TableContainer sx={{ maxHeight: 440 }}>
         <Table stickyHeader aria-label="sticky table">
           <TableHead>
@@ -62,7 +92,7 @@ export default function GraphTable() {
                 <TableCell
                   key={column.id}
                   align={column.align}
-                  style={{ minWidth: column.minWidth }}
+                  style={{ minWidth: column.minWidth, fontSize: '1.5rem', color: 'white', backgroundColor: 'black' }}
                 >
                   {column.label}
                 </TableCell>
@@ -70,19 +100,22 @@ export default function GraphTable() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows
+            {filteredRows
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               .map((row) => {
                 return (
                   <TableRow hover role="checkbox" tabIndex={-1} key={row.ID}>
-                    <TableCell key={columns[0].id} align={columns[0].align}>
-                      <Link to="/wf/CodeViewer">{row[columns[0].id]}</Link>
+                    <TableCell key={columns[0].id} align={columns[0].align} style={{ fontSize: '1rem' }}>
+                      <Link to="/wf/CodeViewer" style={{ textDecoration: 'none', color: 'black' }}>{row[columns[0].id]}</Link>
                     </TableCell>
-                    <TableCell key={columns[1].id} align={columns[1].align}>
+                    <TableCell key={columns[1].id} align={columns[1].align} style={{ fontSize: '1rem' }}>
                       {row[columns[1].id]}
                     </TableCell>
-                    <TableCell key={columns[2].id} align={columns[2].align}>
-                      {row[columns[2].id]}
+                    <TableCell key={columns[2].id} align={columns[2].align} style={{ fontSize: '1rem' }}>
+                      <div>
+                        {row[columns[2].id]}
+                        <div className='cspIndicator'></div>
+                      </div>
                     </TableCell>
                   </TableRow>
                 );
@@ -93,7 +126,7 @@ export default function GraphTable() {
       <TablePagination
         rowsPerPageOptions={[10, 25, 100]}
         component="div"
-        count={rows.length}
+        count={filteredRows.length}
         rowsPerPage={rowsPerPage}
         page={page}
         onPageChange={handleChangePage}
@@ -102,5 +135,3 @@ export default function GraphTable() {
     </Paper>
   );
 }
-
-

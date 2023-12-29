@@ -133,17 +133,15 @@ const GraphWrapper = ({depdetails}) => {
   };
 
   return (
-    // <div className="graphcontainer">
-    //   <div className="graphbox">
-    //     <Graph graph={graph} options={options} events={{ click: HandleNodeClick }} style={{ height: "640px" }} />
-    //   </div>      
-    // </div>
-
-    <div className="MermaidGraphh">
-      <h1></h1>
-        <MermaidDiagram definition={graph.mermaidGraphDefinition} />
-      </div>
-    
+    // <div className="MermaidGraphh">
+    //   <h1></h1>
+    //     <MermaidDiagram definition={graph.mermaidGraphDefinition} />
+    //   </div>    
+    <div className="mermaidGraphh">  
+      <div className='mermaidGraphhHeading'>User Submitted Workflow</div>
+      <h2></h2>
+      <MermaidDiagram definition={graph.mermaidGraphDefinition} />
+    </div>
   );
 };
 
@@ -155,7 +153,7 @@ const GraphWrapper = ({depdetails}) => {
 function InvocationsPage() {
   const location=useLocation();
   const [depdetails,setDepdetails]=useState({})
-const [deploymentId,setDeploymentId]=useState("");
+  const [deploymentId,setDeploymentId]=useState("");
   useEffect(()=>{
     const params=new URLSearchParams(location.search);
     const depid=params.get("wf_deployment_id");
@@ -198,25 +196,26 @@ const [theme]=useMode();
             color="primary"
             size="large"
             variant="outlined"
-            onClick={handlegraphClick}>Graph View
+            onClick={handlegraphClick}
+            style={{backgroundColor:'black', color: 'white'}}>Graph View
           </Button>
           <Button
             color="primary"
             size="large"
             variant="outlined"
-            onClick={handleTableClick}>Table View
+            onClick={handleTableClick}
+            style={{backgroundColor:'black', color: 'white'}}>Table View
             </Button>
             <Button
             color="primary"
             size="large"
             variant="outlined"
-            onClick={handleInvoClick}>Invocations 
+            onClick={handleInvoClick}
+            style={{backgroundColor:'black', color: 'white'}}>Invocations 
             </Button>
         </div>
-        {activeComponent === 'GraphWrapper' ? <GraphWrapper depdetails={depdetails}/> : <GraphTable depdetails={depdetails} />}
-        
-        </div>
-        
+        {activeComponent === 'GraphWrapper' ? <GraphWrapper depdetails={depdetails}/> : <GraphTable depdetails={depdetails} />}        
+        </div>        
       </ThemeProvider>
    
   </>
