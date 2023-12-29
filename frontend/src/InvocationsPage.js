@@ -155,7 +155,7 @@ const GraphWrapper = ({depdetails}) => {
 function InvocationsPage() {
   const location=useLocation();
   const [depdetails,setDepdetails]=useState({})
-const [deploymentId,setDeploymentId]=useState("");
+  const [deploymentId,setDeploymentId]=useState("");
   useEffect(()=>{
     const params=new URLSearchParams(location.search);
     const depid=params.get("wf_deployment_id");
