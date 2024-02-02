@@ -21,20 +21,20 @@ const MermaidDiagram = ({ definition }) => {
     setMermaidInitialized(true);
   }, []);
 
-  useEffect(() => {
-    const reloadCount = sessionStorage.getItem('reloadCount');
+  // useEffect(() => {
+  //   const reloadCount = sessionStorage.getItem('reloadCount');
     
-    if (mermaidInitialized && (!reloadCount || parseInt(reloadCount) === 0)) {
-      const timeout = setTimeout(() => {
-        sessionStorage.setItem('reloadCount', '1'); // Set the flag to prevent further reloads
-        window.location.reload();
-      }, 100);
+  //   if (mermaidInitialized && (!reloadCount || parseInt(reloadCount) === 0)) {
+  //     const timeout = setTimeout(() => {
+  //       sessionStorage.setItem('reloadCount', '1'); // Set the flag to prevent further reloads
+  //       window.location.reload();
+  //     }, 100);
 
-      return () => {
-        clearTimeout(timeout);
-      };
-    }
-  }, [mermaidInitialized]);
+  //     return () => {
+  //       clearTimeout(timeout);
+  //     };
+  //   }
+  // }, [mermaidInitialized]);
 
   return (
     <div>

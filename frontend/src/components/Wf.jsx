@@ -382,32 +382,31 @@ function createData(wf_deployment_id, wf_deployment_time, wf_deployment_name) {
 //       {definition}
 //     </div>
 //   );
-// };
+// };m
 
 
 const MermaidDiagram = ({ definition }) => {
   const [mermaidInitialized, setMermaidInitialized] = useState(false);
 
   useEffect(() => {
-    // Initialize Mermaid when the component mounts
+    // Initialize Mermaid when the component mounts 
     mermaid.initialize({ startOnLoad: true });
     setMermaidInitialized(true);
-  }, []);
+  }, [definition]);
 
-  useEffect(() => {
-    const reloadCount = sessionStorage.getItem('reloadCount');
+  // useEffect(() => {
+  //   const reloadCount = sessionStorage.getItem('reloadCount');
     
-    if (mermaidInitialized && (!reloadCount || parseInt(reloadCount) === 0)) {
-      const timeout = setTimeout(() => {
-        sessionStorage.setItem('reloadCount', '1'); // Set the flag to prevent further reloads
-        window.location.reload();
-      }, 100);
-
-      return () => {
-        clearTimeout(timeout);
-      };
-    }
-  }, [mermaidInitialized]);
+  //   if (mermaidInitialized && (!reloadCount || parseInt(reloadCount) === 0)) {
+  //     const timeout = setTimeout(() => {
+  //       sessionStorage.setItem('reloadCount', '1'); // Set the flag to prevent further reloads
+  //       window.location.reload();
+  //     }, 100);
+  //     return () => {
+  //       clearTimeout(timeout);
+  //     };
+  //   }
+  // }, [mermaidInitialized]);
 
   return (
     <div className='mermaid-container'>

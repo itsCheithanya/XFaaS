@@ -134,11 +134,12 @@ import { useLocation } from "react-router-dom";
 import { Link } from 'react-router-dom';
 import axios from "axios";
 import Line from '../line/Line';
-import StartvsEndScatterPlot from '../line/Line2';
+import StartvsEndScatterPlot from '../line/StartvsEndScatterPlot';
 import ResponsiveAppBar from '../../components/App-bar';
 import {useMode} from '../../theme'
 import {ThemeProvider} from "@mui/material"
 import Paper from '@mui/material/Paper';
+import StartvsEndHistogram from '../line/StartvsEndHistogram';
 
 const Invocation = () => {
   const [invocationList, setInvocationList] = useState([]);
@@ -252,7 +253,7 @@ axios.post("/api/deploymentId/listAllInvocations/",{"wf_deployment_id":depid}).t
               height:"50rem",              
               paddingBottom: '8rem'
             }}>
-        <StartvsEndScatterPlot/>
+        <StartvsEndHistogram/>
         </Box>
        
         

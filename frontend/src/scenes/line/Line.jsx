@@ -15,7 +15,7 @@
 // };
 
 // export default Line;
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import { Box, Button, styled } from "@mui/material";
 import { ResponsiveLine } from "@nivo/line";
 import axios from "axios";
@@ -78,6 +78,24 @@ const CustomButton = styled(Button)({
 
 const Line = () => {
   const [chartData, setChartData] = useState([]);
+useEffect(() => {
+  axios.post("/api/deploymentId/invocations",{"wf_deployment_id":"5fa74fb4-bb52-4ce7-932a-d0d30936b3d3"})
+    .then(response => {
+      const { workflow_deployment_id, no_of_invocations } = response.data;
+      const currentTime = new Date().toLocaleTimeString();
+      // Update chartData with array of objects
+      setChartData(prevData => [
+        ...prevData,
+        {
+          x: currentTime,
+          y: no_of_invocations,
+        }
+      ]);
+    })
+    .catch(error => {
+      console.error("Error fetching data:", error);
+    });
+}, []);
 
   const fetchData = async () => {
     try {

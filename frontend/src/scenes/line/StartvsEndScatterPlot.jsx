@@ -10,7 +10,11 @@ const StartvsEndScatterPlot = (props) => {
   const [execTime,setExecTimeList]=useState([]);
   const location=useLocation();
   
-
+  const calculateExecutionTime = (startTime, endTime) => {
+    const start = new Date(startTime).getTime();
+    const end = new Date(endTime).getTime();
+    return end - start; // Returns execution time in milliseconds
+  };
   useEffect(() => {
     const params=new URLSearchParams(location.search);
   const depid=params.get("wf_deployment_id");
@@ -73,7 +77,7 @@ const StartvsEndScatterPlot = (props) => {
   const XsortedData = filteredData
     .map(item => ({
       x: new Date(item.invocation_start_time_ms).toLocaleString(),
-      y: new Date(item.workflowEndTime).toLocaleString(),
+      y: calculateExecutionTime(item.invocation_start_time_ms,item.workflowEndTime)/1000,
     }))
     .sort((a, b) => new Date(a.x) - new Date(b.x));
 
@@ -113,7 +117,7 @@ const StartvsEndScatterPlot = (props) => {
           min: startX,
           max: endX,
          }}
-        yScale={{ type: 'point', min: startY, max: endY }}
+        yScale={{ type: 'point', min: 0, max: 500 }}
         colors="lightblue"
         blendMode="normal"
         enableGridX={true}
@@ -131,10 +135,10 @@ const StartvsEndScatterPlot = (props) => {
         axisLeft={{
           tickSize: 0,
           tickPadding: 5,
-          legend: 'End Time',
+          legend: 'Execution Time',
           legendPosition: 'middle',
           legendOffset: -40,
-          tickValues: [startY, endY],
+          tickValues: [0, 500],
         }}
         nodeSize={8}
         tooltip={({ node }) => (
@@ -148,7 +152,7 @@ const StartvsEndScatterPlot = (props) => {
           >
             <strong>Start Time: {node.data.x}</strong>
             <br />
-            <strong>End Time: {node.data.y}</strong>
+            <strong>Execution Time: {node.data.y} seconds</strong>
           </div>
         )}
       />
