@@ -41,8 +41,3 @@ Follow these steps to clone and run the XFaaS dashboard:
      ```bash
      npm run dev
      ```
-
-## Feedback and Contributions
-
-Feel free to open an issue or pull request for any feedback or contributions.
-
