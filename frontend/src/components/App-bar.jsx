@@ -18,7 +18,7 @@ import { useAuthStatus } from '../hooks/useAuthStatus';
 
 
 const pages = ['Home', 'About Us', 'Contact'];
-const settings = ['Profile', 'Logout'];
+//const settings = ['Profile', 'Logout'];
 
 function ResponsiveAppBar() {
   const navigate = useNavigate();
@@ -64,10 +64,12 @@ function ResponsiveAppBar() {
               letterSpacing: '.3rem',
               color: 'inherit',
               textDecoration: 'none',
+              marginLeft: 'auto',
+              marginRight: 'auto'
             }}
           >XFaaS</Typography>
 
-          <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
+          {/* <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
             <IconButton
               size="large"
               aria-label="account of current user"
@@ -108,7 +110,7 @@ function ResponsiveAppBar() {
             variant="h5"
             noWrap
             component="a"
-            href=""
+            href="/"
             sx={{
               mr: 2,
               display: { xs: 'flex', md: 'none' },
@@ -132,9 +134,11 @@ function ResponsiveAppBar() {
                 {page}
               </Button>
             ))}
-          </Box>
+          </Box> */}
                 
-          <Box sx={{ flexGrow: 0 }}>
+
+
+          {/* <Box sx={{ flexGrow: 0 }}>
             
             <Tooltip title={result.username}>
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
@@ -148,12 +152,12 @@ function ResponsiveAppBar() {
               anchorEl={anchorElUser}
               anchorOrigin={{
                 vertical: 'top',
-                horizontal: 'right',
+                horizontal: 'rightright',
               }}
               keepMounted
               transformOrigin={{
                 vertical: 'top',
-                horizontal: 'right',
+                horizontal: 'left',
               }}
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
@@ -165,7 +169,8 @@ function ResponsiveAppBar() {
                 </MenuItem>
               ))}
             </Menu>
-          </Box>
+          </Box> */}
+          
         </Toolbar>
       </Container>
     </AppBar>

@@ -4,6 +4,7 @@ import "./App.css";
 import { useMode } from './theme';
 import {Box, ThemeProvider} from "@mui/material"
 import TypewriterEffect from './components/TypeWriterEffect';
+import Footer from './components/Footer';
 
 function App() {
   const [theme]=useMode();
@@ -16,6 +17,7 @@ function App() {
       <TypewriterEffect text="Manage your workflows with XFaaS" />
         <AllwfTable /> 
       </div>
+      <Footer></Footer>
     </ThemeProvider>  
   );
 }
