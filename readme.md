@@ -1,8 +1,18 @@
 # XFaaS Dashboard Setup Guide
 
-## Prerequisites
+## Prerequisites for Running XFaaS Dashboard
 
-Before setting up the XFaaS dashboard, ensure you have the following prerequisites:
+Before you proceed with setting up the XFaaS dashboard, ensure the following prerequisites are met:
+
+1. **Git Installation**:
+   - Confirm that Git is installed on your system. If not, download and install Git for your respective operating system from [here](https://git-scm.com/).
+
+2. **Node.js Installation**:
+   - Install the latest version of Node.js. Visit Node.js's official website for detailed instructions on installation.
+
+3. **AWS CLI and SDK Setup**:
+   - Set up the AWS Command Line Interface (CLI) and AWS Software Development Kits (SDKs) to enable interactions with AWS services.
+   - Refer to the following link for comprehensive setup instructions: [Setting up AWS CLI and SDKs](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-files.html).
 
 - **Google Chrome**: Using Chrome as a default browser is mandatory for viewing XFaaS dashboard.
 
