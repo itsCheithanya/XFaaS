@@ -13,6 +13,18 @@ Before you proceed with setting up the XFaaS dashboard, ensure the following pre
 3. **AWS CLI and SDK Setup**:
    - Set up the AWS Command Line Interface (CLI) and AWS Software Development Kits (SDKs) to enable interactions with AWS services.
    - Refer to the following link for comprehensive setup instructions: [Setting up AWS CLI and SDKs](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-files.html).
+   - Run this command to quickly set and view your credentials, Region, and output format. The following example shows sample values.
+
+ ```
+$ aws configure
+AWS Access Key ID [None]: AKIAIOSFODNN7EXAMPLE
+AWS Secret Access Key [None]: wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
+Default region name [None]: us-west-2
+Default output format [None]: json
+
+```
+
+    
 
 - **Google Chrome**: Using Chrome as a default browser is mandatory for viewing XFaaS dashboard.
 
