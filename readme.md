@@ -23,7 +23,7 @@ Follow these steps to clone and run the XFaaS dashboard:
 1. **Clone the Repository**:
    - Clone the GitHub repository [XFaaS](https://github.com/itsCheithanya/XFaaS.git) using the following command:
      ```bash
-     git clone https://github.com/itsCheithanya/XFaaS/tree/styling_branch
+     git clone https://github.com/itsCheithanya/XFaaS.git
      ```
    - Alternatively, you can download the zip file of the repository and unzip it.
 
