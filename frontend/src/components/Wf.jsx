@@ -470,7 +470,7 @@ const Wf = () => {
 
 
 
-  const [theme]=useMode();
+  const [theme] = useMode();
   
   return( 
       <ThemeProvider theme={theme}>  
@@ -491,9 +491,15 @@ const Wf = () => {
             </div>
 
             <div className="mermaidGraphh">  
-              <div className='mermaidGraphhHeading'>User Submitted Workflow</div>
+                <div className='mermaidGraphhHeading'>User Submitted Workflow<span className='caution'><span className='cautionMark'>!</span> If graph is not visible, please reload the page</span></div>
+                
+              
               <h2></h2>
-              <MermaidDiagram definition={wfdetails.mermaidGraphDefinition} />
+              {wfdetails.mermaidGraphDefinition !== '' ? (
+                  <MermaidDiagram definition={wfdetails.mermaidGraphDefinition} />
+              ) : (
+                  <p style={{ padding: '2rem', fontSize: '1.5rem' }}>No user submitted workflow found</p>
+              )}
             </div>
 
             <DeploymentTable alldep={alldep} />   

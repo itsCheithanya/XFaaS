@@ -18,7 +18,7 @@ import { useAuthStatus } from '../hooks/useAuthStatus';
 
 
 const pages = ['Home', 'About Us', 'Contact'];
-//const settings = ['Profile', 'Logout'];
+const settings = ['Profile', 'Logout'];
 
 function ResponsiveAppBar() {
   const navigate = useNavigate();
@@ -138,7 +138,7 @@ function ResponsiveAppBar() {
                 
 
 
-          {/* <Box sx={{ flexGrow: 0 }}>
+          <Box sx={{ flexGrow: 0 }}>
             
             <Tooltip title={result.username}>
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
@@ -169,7 +169,7 @@ function ResponsiveAppBar() {
                 </MenuItem>
               ))}
             </Menu>
-          </Box> */}
+          </Box>
           
         </Toolbar>
       </Container>

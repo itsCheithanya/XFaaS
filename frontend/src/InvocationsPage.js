@@ -137,11 +137,21 @@ const GraphWrapper = ({depdetails}) => {
     //   <h1></h1>
     //     <MermaidDiagram definition={graph.mermaidGraphDefinition} />
     //   </div>    
+    // <div className="mermaidGraphh">  
+    //   <div className='mermaidGraphhHeading'>Refactored Workflow<span className='caution'><span className='cautionMark'>!</span> If graph is not visible, please reload the page</span></div>
+    //   <h2></h2>
+    //   <MermaidDiagram definition={graph.mermaidGraphDefinition} />
+    // </div>
+
     <div className="mermaidGraphh">  
-      <div className='mermaidGraphhHeading'>User Submitted Workflow</div>
-      <h2></h2>
-      <MermaidDiagram definition={graph.mermaidGraphDefinition} />
+        <div className='mermaidGraphhHeading'>Refactored Workflow<span className='caution'><span className='cautionMark'>!</span> If graph is not visible, please reload the page</span></div>
+        {graph.mermaidGraphDefinition !== '' ? (
+            <MermaidDiagram definition={graph.mermaidGraphDefinition} />
+        ) : (
+            <p style={{ padding: '2rem', fontSize: '1.5rem' }}>No refactored workflow found</p>
+        )}
     </div>
+
   );
 };
 

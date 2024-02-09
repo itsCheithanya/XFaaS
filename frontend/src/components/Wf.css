@@ -8,12 +8,15 @@
   margin: 2rem;
 }
 
-.mermaidGraphh{
-  
+.mermaidGraphh{  
   box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
   border-radius: 10px;
   overflow: hidden;
   height: 95vh;
+}
+
+.mermaidGraphhHeader{
+  width: 100%;
 }
 
 .mermaidGraphhHeading{
@@ -21,6 +24,28 @@
   color: white;
   padding: 1rem;
   font-size: 1.5rem;
+}
+
+.caution{
+  color: yellow;
+  font-size: 1rem;
+  padding-left: 2rem;
+}
+
+.cautionMark{  
+  border-width: 1px;
+  border-color: yellow;
+  border-style: solid;
+  border-radius: 2px;
+  padding: 2px;
+}
+
+.mermaidGraphhHeadingCaution{
+  background-color: black;
+  color: yellow;
+  padding-top: 1rem;
+  font-size: 1rem;
+  flex: 1.2;
 }
 
 .graphcontainer {
